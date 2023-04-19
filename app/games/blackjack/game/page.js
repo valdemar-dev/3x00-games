@@ -8,8 +8,6 @@ export default function BlackjackApp() {
   const [ gameData, setGameData ] = useState(null);
   const [ loading, setLoading ] = useState(true);
 
-  const router = useRouter();
-
   const cookies = new Cookies();
 
   const [dataInterval, setDataInterval] = useState(null);
