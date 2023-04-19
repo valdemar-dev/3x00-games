@@ -212,14 +212,10 @@ class BJGameManager {
 
 let bjGameManager;
 
-if (process.env.NODE_ENV === 'production') {
-  bjGameManager = new BJGameManager();
-} else {
-  if(!global.bjGameManager) {
-    global.bjGameManager = new BJGameManager();
-  }
-
-  bjGameManager = global.bjGameManager;
+if(!global.bjGameManager) {
+  global.bjGameManager = new BJGameManager();
 }
+
+bjGameManager = global.bjGameManager;
 
 export default bjGameManager;
