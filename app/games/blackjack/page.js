@@ -34,7 +34,7 @@ export default function Blackjack() {
     <div>
       <h1>Blackjack!</h1>
       <form onSubmit={(event) => {createGame(event)}}>
-        <label htmlFor="idlist">Enter list of user ID's separated by a comma and a space.</label><br/>
+        <label htmlFor="idlist">Enter list of user ID&apos;s separated by a comma and a space.</label><br/>
         <input name="idlist" type="text"/><br/>
 
         <label htmlFor="bet">Enter bet: (cannot be larger than balance or less than 0)</label><br/>

@@ -9,9 +9,10 @@ export default function GamesLayout({ children }) {
   // this is for auto-redirecting the user if they aren't logged in
   useEffect(() => {
     fetch("/api/validateSessionData").then((result) => {
-      if (!result.ok) return router.push("/login"); 
+      if (!result.ok) router.push("/login"); 
+      return;
     })
-  }, [])
+  }, [router])
 
   return (
     <div>

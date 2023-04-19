@@ -14,24 +14,8 @@ export default function BlackjackApp() {
 
   // fetch game data once on page load for faster load times
   // then refresh the data with a three second interval.
-  let interval;
   useEffect(() => {
-    fetch("/api/games/blackjack/getGameData")
-    .then(async (res) => {
-      if (!res.ok || !res) {
-        router.push("/games/blackjack/"); 
-        return clearInterval(interval);
-      }
-
-      const resJSON = await res.json();
-
-      setGameData(resJSON.gameData);
-      setLoading(false);
-
-      return;
-    });
-
-    interval = setInterval(() => {
+    const interval = setInterval(() => {
       fetch("/api/games/blackjack/getGameData")
       .then(async (res) => {
         if (!res.ok || !res) {
