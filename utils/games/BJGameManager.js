@@ -1,4 +1,5 @@
 import prisma from "../prismaClient";
+import crypto from "crypto";
 
 class GameDeck {
   constructor() {
