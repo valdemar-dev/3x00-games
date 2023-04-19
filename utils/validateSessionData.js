@@ -9,7 +9,8 @@ const validateSessionData = async (sessionToken, userId) => {
     },
   }) || null;
 
-  if (user.id !== userId || !user) return false;
+  if (user?.id !== userId || !user) return false;
+
 
   return true;
 }

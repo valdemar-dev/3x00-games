@@ -8,40 +8,42 @@ export default function BlackjackApp() {
   const [ gameData, setGameData ] = useState(null);
   const [ loading, setLoading ] = useState(true);
 
-  const cookies = new Cookies();
+  const router = useRouter();
 
-  const [dataInterval, setDataInterval] = useState(null);
+  const cookies = new Cookies();
 
   // fetch game data once on page load for faster load times
   // then refresh the data with a three second interval.
   useEffect(() => {
-    setDataInterval(setInterval(() => {
+    const dataInterval = setInterval(() => {
       fetch("/api/games/blackjack/getGameData")
-      .then(async (res) => {
-        if (!res.ok || !res) {
-          clearInterval(dataInterval);
-          return;
-        }
+        .then(async (res) => {
+          if (!res.ok || !res) {
+            clearInterval(dataInterval);
+            return;
+          }
 
-        const resJSON = await res.json();
+          const resJSON = await res.json();
 
-        setGameData(resJSON.gameData);
-        setLoading(false);
+          setGameData(resJSON.gameData);
+          setLoading(false);
 
-        if (resJSON.gameData.isGameOver === true) {
-          clearInterval(dataInterval);
-        }
-
-        return;
-      })
-      .catch((error) => {
-          console.error(error);
-
-          clearInterval(dataInterval);
+          if (resJSON.gameData.isGameOver === true) {
+            clearInterval(dataInterval);
+          }
 
           return;
-      });
-    }, 3000));
+        })
+          .catch((error) => {
+              console.error(error);
+
+              clearInterval(dataInterval);
+
+              return;
+          });
+    }, 3000);
+
+    return () => clearInterval(dataInterval);
   }, []);
 
   // next 13 loading page doesnt seem to apply for-
@@ -66,7 +68,8 @@ export default function BlackjackApp() {
     await fetch("/api/games/blackjack/drawCard")
       .then(async (res) => {
         if (!res.ok || !res) {
-          return clearInterval(dataInterval); 
+          router.push("/games/blackjack/");
+          return router.refresh();
         }
 
         const resJSON = await res.json();
@@ -92,7 +95,8 @@ export default function BlackjackApp() {
     await fetch("/api/games/blackjack/stand")
       .then(async (res) => {
         if (!res.ok || !res)  {
-          return clearInterval(dataInterval);
+          router.push("/games/blackjack/");
+          return router.refresh();
         }
 
         gameData.me.isInGame = false;

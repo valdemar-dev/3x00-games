@@ -34,7 +34,7 @@ export async function GET(req) {
 
     // easy way to do the dealer turn sneakily
     game.doDealerTurn();
-  }
+  } 
 
   if (game.isGameOver === true) {
     bjGameManager.deleteGame(game.id);

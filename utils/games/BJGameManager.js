@@ -157,7 +157,6 @@ class Game {
     });
 
     this.isGameOver = true;
-    this.currentTurn = "None.";
     return;
   }
 }
