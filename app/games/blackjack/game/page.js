@@ -19,7 +19,8 @@ export default function BlackjackApp() {
       fetch("/api/games/blackjack/getGameData")
       .then(async (res) => {
         if (!res.ok || !res) {
-          return clearInterval(interval);
+          clearInterval(interval);
+          return router.push("/games/blackjack/");
         }
 
         const resJSON = await res.json();
