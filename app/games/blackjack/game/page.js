@@ -22,7 +22,7 @@ export default function BlackjackApp() {
       .then(async (res) => {
         if (!res.ok || !res) {
           clearInterval(dataInterval);
-          return router.push("/games/blackjack/");
+          return;
         }
 
         const resJSON = await res.json();
