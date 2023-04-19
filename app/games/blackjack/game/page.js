@@ -12,10 +12,12 @@ export default function BlackjackApp() {
 
   const cookies = new Cookies();
 
+  const [dataInterval, setDataInterval] = useState(null);
+
   // fetch game data once on page load for faster load times
   // then refresh the data with a three second interval.
   useEffect(() => {
-    const interval = setInterval(() => {
+    setDataInterval(setInterval(() => {
       fetch("/api/games/blackjack/getGameData")
       .then(async (res) => {
         if (!res.ok || !res) {
@@ -29,7 +31,7 @@ export default function BlackjackApp() {
         setLoading(false);
 
         if (resJSON.gameData.isGameOver === true) {
-          clearInterval(interval);
+          clearInterval(dataInterval);
         }
 
         return;
@@ -37,11 +39,11 @@ export default function BlackjackApp() {
       .catch((error) => {
           console.error(error);
 
-          clearInterval(interval);
+          clearInterval(dataInterval);
 
           return;
       });
-    }, 3000);
+    }, 3000));
   }, []);
 
   // next 13 loading page doesnt seem to apply for-
@@ -66,7 +68,7 @@ export default function BlackjackApp() {
     await fetch("/api/games/blackjack/drawCard")
       .then(async (res) => {
         if (!res.ok || !res) {
-          return clearInterval(interval); 
+          return clearInterval(dataInterval); 
         }
 
         const resJSON = await res.json();
@@ -92,7 +94,7 @@ export default function BlackjackApp() {
     await fetch("/api/games/blackjack/stand")
       .then(async (res) => {
         if (!res.ok || !res)  {
-          return clearInterval(interval);
+          return clearInterval(dataInterval);
         }
 
         gameData.me.isInGame = false;
