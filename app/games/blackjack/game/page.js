@@ -21,7 +21,7 @@ export default function BlackjackApp() {
       fetch("/api/games/blackjack/getGameData")
       .then(async (res) => {
         if (!res.ok || !res) {
-          clearInterval(interval);
+          clearInterval(dataInterval);
           return router.push("/games/blackjack/");
         }
 
