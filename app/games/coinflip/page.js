@@ -54,7 +54,7 @@ export default function Coinflip() {
     <div>
       <h1>Coinflip!</h1>
       <div ref={resultRef}></div>
-      <div>Coins: {userWalletBalance}</div>
+      <div>Coins: {userWalletBalance || "loading.."}</div>
 
       <form onSubmit={(event) => {coinFlip(event)}}>
         <input type="number" placeholder="Bet" required/>

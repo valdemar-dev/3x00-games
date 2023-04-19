@@ -1,4 +1,3 @@
-import prisma from "@/utils/prismaClient";
 import validateSessionData from "@/utils/validateSessionData";
 
 export async function GET(req) {
@@ -6,19 +5,12 @@ export async function GET(req) {
   const userId = req.cookies.get("userId")?.value;
 
   if (await validateSessionData(sessionToken, userId) === false) {
-    return new Response("Invalid session token.", {
+    return new Response("Invalid session data", {
       status: 401,
     });
-  }
+  } 
 
-  const user = await prisma.user.findUnique({
-    where: {
-      sessionToken: sessionToken,
-    },
-    include: {
-      wallet: true,
-    },
-  });
-
-  return new Response(JSON.stringify(user.wallet));
-};
+  return new Response("Valid session data", {
+    status: 200,
+  })
+}

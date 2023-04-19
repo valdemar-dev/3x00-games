@@ -35,11 +35,10 @@ export async function POST(request) {
     },
   });
 
-  return new Response("Logged in!", {
-    headers: {
-      //cookie needs to be renewed every 90 days.
-      "Set-Cookie": `sessionToken=${sessionToken}; Secure; Max-Age=${90 * 86400}; HttpOnly=False; SameSite=None; Path=/;`,
-    },
-  })
+  const response = new Response(JSON.stringify({ sessionToken: sessionToken, userId: user.id }));
+
+  //response.headers.set("Set-Cookie", `userId=${user.id}; Secure; Max-Age=${90 * 86400}; HttpOnly=False; SameSite=None; Path=/, sessionToken=${sessionToken}; Secure; Max-Age=${90 * 86400}; HttpOnly=False; SameSite=None; Path=/;, test=test;`);
+
+  return response;
 }
 

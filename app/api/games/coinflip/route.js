@@ -1,9 +1,12 @@
 import prisma from "@/utils/prismaClient";
-import validateSessionToken from "@/utils/validateSessionToken";
+import validateSessionData from "@/utils/validateSessionData";
 
 export async function POST(req) {
-  if (await validateSessionToken(req.cookies.get("sessionToken")?.value) === false) {
-    return new Response("Invalid session token.", {
+  const sessionToken = req.cookies.get("sessionToken")?.value;
+  const userId = req.cookies.get("userId")?.value;
+
+  if (await validateSessionData(sessionToken, userId) === false) {
+    return new Response("Invalid session token or user id.", {
       status: 401,
     });
   }
