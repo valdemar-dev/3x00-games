@@ -1,3 +1,4 @@
+import bjGameManager from "@/utils/games/BJGameManager";
 import validateSessionData from "@/utils/validateSessionData";
 
 export async function GET(req) {

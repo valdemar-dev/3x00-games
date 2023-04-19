@@ -1,4 +1,5 @@
 import validateSessionData from "@/utils/validateSessionData";
+import bjGameManager from "@/utils/games/BJGameManager";
 
 export async function GET(req) {
   const sessionToken = req.cookies.get("sessionToken")?.value;
