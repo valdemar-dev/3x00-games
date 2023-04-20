@@ -12,37 +12,34 @@ export default function BlackjackApp() {
 
   const cookies = new Cookies();
 
-  // fetch game data once on page load for faster load times
-  // then refresh the data with a three second interval.
-  useEffect(() => {
-    const dataInterval = setInterval(() => {
-      fetch("/api/games/blackjack/getGameData")
-        .then(async (res) => {
-          if (!res.ok || !res) {
-            clearInterval(dataInterval);
-            return;
-          }
+  const getData = async () => {
+    fetch("/api/games/blackjack/getGameData")
+      .then(async (res) => {
+        if(!res.ok || !res) {
+          router.push("/games/blackjack");
+          router.refresh();
+          return;
+        }
 
-          const resJSON = await res.json();
+        const resJSON = await res.json();
 
-          setGameData(resJSON.gameData);
-          setLoading(false);
-
-          if (resJSON.gameData.isGameOver === true) {
-            clearInterval(dataInterval);
-          }
-
+        setGameData(resJSON.gameData);
+        setLoading(false);
+      }).catch((error) => {
+          console.error(error);
           return;
         })
-          .catch((error) => {
-              console.error(error);
+  };
 
-              clearInterval(dataInterval);
+  useEffect(() => {
+    getData();
 
-              return;
-          });
-    }, 3000);
+    const dataInterval = setInterval(() => {
+      getData();
+      return;
+    }, 3000)
 
+    // clears interval when component unloads
     return () => clearInterval(dataInterval);
   }, []);
 
@@ -126,6 +123,15 @@ export default function BlackjackApp() {
     })
   };
 
+  const leaveGame = async () => {
+    fetch("/api/games/blackjack/leaveGame");
+
+    alert("You are leaving the game!");
+
+    router.push("/games/blackjack");
+    return router.refresh();
+  };
+
   return (
     <div>
       <h1>Blackjack game!</h1>
@@ -155,6 +161,9 @@ export default function BlackjackApp() {
 
           disabled={cookies.get("userId") !== gameData.currentTurn || gameData.me.isInGame === false}
         >Stand</button>
+
+        <button 
+          onClick={async () => {await leaveGame()}}>Exit game</button>
       </div>
       <p>Game ID: {gameData.id}</p>
 

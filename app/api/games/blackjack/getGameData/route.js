@@ -36,13 +36,5 @@ export async function GET(req) {
     game.doDealerTurn();
   } 
 
-  // TODO
-  // DONT FORGET THIS
-  // AT ANY POINT
-  // REMEMBER TO DELETE GAMES.
-  //
-  //
-  //
-
   return new Response(JSON.stringify({gameData: gameData}));
 }
