@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function GamesLayout({ children }) {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function GamesLayout({ children }) {
       if (!result.ok) router.push("/login"); 
       return;
     })
-  }, [router])
+  }, [])
 
   return (
     <div>

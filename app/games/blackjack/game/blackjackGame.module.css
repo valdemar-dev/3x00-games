@@ -1,0 +1,28 @@
+div#page {
+  background-color: darkgreen;
+
+  margin: 0;
+  padding-top: 1rem;
+}
+
+#card_container {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  aspect-ratio: 9 / 13;
+
+  height: 12rem;
+
+  margin: 1rem;
+
+  border-radius: 20px;
+
+  background-color: white;
+}
+

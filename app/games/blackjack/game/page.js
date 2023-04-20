@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
-  
+import styles from "./blackjackGame.module.css";
+
 export default function BlackjackApp() {
   const [ gameData, setGameData ] = useState(null);
   const [ loading, setLoading ] = useState(true);
@@ -37,7 +38,7 @@ export default function BlackjackApp() {
     const dataInterval = setInterval(() => {
       getData();
       return;
-    }, 3000)
+    }, 1500)
 
     // clears interval when component unloads
     return () => clearInterval(dataInterval);
@@ -54,7 +55,12 @@ export default function BlackjackApp() {
   const mapCards = (cards) => {
     return cards.map((card) => {
       return (
-        <span key={`${card.value}${card.house}`}><br/>{card.value} of {card.house}</span>
+        <span 
+          className={styles.card} 
+          key={`${card.value}${card.house}`}
+        >
+          {card.value} <img src={`/${card.house}.svg`} alt="Card house" height="30px"/> 
+        </span>
       )
     })
   };
@@ -110,7 +116,9 @@ export default function BlackjackApp() {
       return (
         <div key={player.id}>
           <h4>{player.id}</h4>
-          <p>Cards: [{mapCards(player.cards)}<br/>]</p>
+          <div id={styles.card_container}>
+            {mapCards(player.cards)}
+          </div>
           <br/>
           <span>Total: {player.cardTotal}</span>
           <br/>
@@ -133,13 +141,13 @@ export default function BlackjackApp() {
   };
 
   return (
-    <div>
+    <div id={styles.page}>
       <h1>Blackjack game!</h1>
       <h4>Current turn: {gameData.currentTurn}</h4>
 
       <div>
         <h4>Dealer</h4>
-        <p>Cards: [{mapCards(gameData.dealerCards)}<br/>]</p>
+        <div id={styles.card_container}>{mapCards(gameData.dealerCards)}</div>
         <span>Total: {gameData.dealerTotal}</span>
         <hr/>
 
