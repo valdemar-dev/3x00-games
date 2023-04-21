@@ -131,9 +131,11 @@ export default function BlackjackApp() {
         gameData.me.isInGame = false;
         me.cardTotal += resJSON.value;
         me.cards.push(resJSON);
+
+        setLoading(false);
       })  
 
-    setLoading(false);
+
     return;
   };
 
@@ -151,9 +153,11 @@ export default function BlackjackApp() {
 
         gameData.me.isInGame = false;
         gameData.me.gameStatus = "stand";
+
+        setLoading(false);
       })
 
-    setLoading(false);
+
     return;
   };
 
