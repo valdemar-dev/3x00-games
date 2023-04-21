@@ -1,4 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Source+Sans+Pro&display=swap');
+
 html,body {
   margin: 0;
   padding: 0;
+
+
+  --fancy-font: 'Playfair Display', serif;
+
+  --regular-font: "Source Sans Pro", sans-serif; 
+
+  font-family: var(--regular-font);
+}
+
+h1 {
+  font-family: var(--fancy-font);
+}
+
+h2,h3,h4,h5,h6 {
+  font-family: var(--regular-font);
 }

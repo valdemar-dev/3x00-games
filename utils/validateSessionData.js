@@ -1,7 +1,7 @@
 import prisma from "./prismaClient";
 
-const validateSessionData = async (sessionToken, userId) => {
-  if(!sessionToken || !userId) return false;
+const validateSessionData = async (sessionToken, userId, username) => {
+  if(!sessionToken || !userId || !username) return false;
 
   const user = await prisma.user.findFirst({
     where: {

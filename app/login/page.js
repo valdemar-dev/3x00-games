@@ -41,7 +41,7 @@ export default function Login() {
 
     cookies.set("userId", resultJSON.userId, { secure: true, sameSite: "none", maxAge: 90 * 86400, httpOnly: false, path:"/" });
 
-    cookies.set("username", resultJSON.username, { secure: true, sameSite: "none", maxAge: 90 * 86400, httpOnly: false, path:"/" });
+    cookies.set("username", event.target[0].value, { secure: true, sameSite: "none", maxAge: 90 * 86400, httpOnly: false, path:"/" });
 
     return router.push("/");
   };

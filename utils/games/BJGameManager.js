@@ -10,9 +10,25 @@ class GameDeck {
 
     houses.forEach((house) => {
       values.forEach((value) => {
+        let face = value;
+
+        if (value === 11) {
+          value = 10;
+          face = "J";
+        } else if (value === 12) {
+          value = 10;
+          face = "Q";
+        } else if (value === 13) {
+          value = 10;
+          face = "K";
+        } else if (value === 1) {
+          face = "A";
+        }
+
         this.cards.push({
           house: house,
           value: value,
+          face: face,
         });
       });
     });
@@ -54,6 +70,8 @@ class Game {
       this.players.push({
         id: player.id,
         bet: player.bet,
+        username: player.username,
+        win: false,
         gameStatus: "playing",
         isInGame: true,
 
@@ -113,7 +131,7 @@ class Game {
   }
 
   doDealerTurn() {
-    while (this.dealer.cardTotal < 17) {
+    while (this.dealer.cardTotal < 18) {
       this.dealer.cards.push(this.deck.drawCard());
     }
 
@@ -122,6 +140,7 @@ class Game {
 
   endGame() {
     // prevents from giving people an infinite amount of money
+    // or removing an infinite amount of money
     if (this.isGameOver === true) return;
 
     const updateUserBalance = async (id, amount) => {
@@ -144,11 +163,13 @@ class Game {
       } else if (player.cardTotal === 21 && this.dealer.cardTotal !== 21) {
         // ***BLACKJACK***
         await updateUserBalance(player.id, (player.bet));
+        player.win = true;
       } else if (player.cardTotal < 21) {
         // ***NORMAL***
-        if (this.dealer.cardTotal > 21 || this.dealer.cardTotal < player.cardTota) {
+        if (this.dealer.cardTotal > 21 || this.dealer.cardTotal < player.cardTotal) {
           // ***WIN***
           await updateUserBalance(player.id, (player.bet));
+          player.win = true;
         } else if (this.dealer.cardTotal >= player.cardTotal) {
           // ***LOSS***
           await updateUserBalance(player.id, (player.bet * -1));

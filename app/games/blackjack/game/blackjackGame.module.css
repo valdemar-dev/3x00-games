@@ -1,28 +1,223 @@
 div#page {
-  background-color: darkgreen;
+  padding: 1rem;
 
-  margin: 0;
-  padding-top: 1rem;
+  box-sizing: border-box;
+
+  color: white;
+
+  background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='42' height='40' patternTransform='scale(2) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(0, 0%, 5%, 1)'/><path d='M11 6a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5 5 5 0 015 5' transform='translate(1,0)' stroke-width='1' stroke='none' fill='hsla(259, 0%, 18%, 1)'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
+
+  min-height: 100vh;
 }
 
+@media screen and (max-width: 600px) {
+  div#page {
+    padding: 0.5rem;
+  }
+}
+
+div#page h1 {
+  margin-top: 0;
+}
+
+/* playing cards */
 #card_container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative;
+
+  height: fit-content;
 }
 
 .card {
   display: flex;
+
+  position: relative;
+  z-index: 1;
+  top: 0;
+
   align-items: center;
   justify-content: center;
 
   aspect-ratio: 9 / 13;
 
-  height: 12rem;
+  min-width: 3rem;
+  width: 6rem;
 
-  margin: 1rem;
+  border-radius: 10px;
 
-  border-radius: 20px;
-
-  background-color: white;
+  background-color: black;
+  background: linear-gradient(to top right, black, rgb(12,12,12));
 }
 
+.card:not(:first-child) {
+  margin-left: calc(4.1rem * -1);
+}
+
+
+/* text that shows the cards house and value */
+.card .card_tl {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card .card_br {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  rotate: 180deg;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card .card_center {
+  transform: translatex(-50%);
+
+  font-size: 1.2rem;
+
+  text-align: center;
+}
+
+
+/* list of players */
+#player_list {
+  display: grid;
+
+  gap: 4rem;
+
+  grid-template-columns: 1fr 1fr 1fr;
+
+  grid-auto-rows: 20rem; 
+}
+
+#player_list .player {
+  overflow: hidden;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player_name {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.card_total {
+  font-size: 1.3rem;
+  font-family: var(--fancy-font);
+}
+
+@media screen and (max-width: 3000px) {
+  #player_list {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 2000px) {
+  #player_list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #player_list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #player_list {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* dealer object */
+#dealer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+
+/* game tools */
+div#game_tools {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+
+  justify-content: center;
+
+
+  z-index: 1000;
+
+  justify-self: center;
+}
+
+#game_tools #game_tools_inner {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+#game_tools_inner button {
+  background-color: rgb(10,10,10);
+
+  font-family: var(--fancy-font);
+
+  color: white;
+
+  padding: 0.6rem;
+
+  border: none;
+  border-radius: 10px;
+}
+
+
+/* game id */
+#game_id {
+  position: absolute;
+
+  bottom: 0;
+  font-size: 0.8rem;
+}
+
+
+/* current turn */
+#current_turn {
+  position: fixed;
+  
+  z-index: 1000;
+
+  top: 1rem;
+  right: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  #current_turn {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
+
+#game_alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}

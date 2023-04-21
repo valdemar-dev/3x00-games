@@ -4,10 +4,11 @@ import validateSessionData from "@/utils/validateSessionData";
 export async function POST(req) {
   const sessionToken = req.cookies.get("sessionToken")?.value;
   const userId = req.cookies.get("userId")?.value;
+  const username = req.cookies.get("username")?.value;
 
   // this makes sure that the user id matches the given session token, 
   // and that both are provided and valid
-  if (await validateSessionData(sessionToken, userId) === false) {
+  if (await validateSessionData(sessionToken, userId, username) === false) {
     return new Response("Invalid session token or user id.", {
       status: 401,
     });
@@ -30,6 +31,7 @@ export async function POST(req) {
     {
       id: userId,
       bet: parseInt(bet),
+      username: username,
     },
   ];
 
@@ -40,11 +42,12 @@ export async function POST(req) {
       playerList.push({
         id: playerId,
         bet: 100,
+        username: "Dummy username",
       });
     });
   }
 
   bjGameManager.createGame(playerList);
 
-  return new Response({ message: "hello fren" })
+  return new Response("OK.")
 }
