@@ -187,6 +187,10 @@ div#game_tools {
   border-radius: 10px;
 }
 
+#game_tools_inner button:disabled {
+  background-color: white;
+  color: black;
+}
 
 /* game id */
 #game_id {

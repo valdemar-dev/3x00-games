@@ -116,7 +116,7 @@ export default function BlackjackApp() {
       .then(async (res) => {
         if (!res.ok || !res) {
           router.push("/games/blackjack/");
-          return router.refresh();
+          return console.log(res.statusText); 
         }
 
         const resJSON = await res.json();
@@ -142,7 +142,7 @@ export default function BlackjackApp() {
       .then(async (res) => {
         if (!res.ok || !res)  {
           router.push("/games/blackjack/");
-          return router.refresh();
+          return console.log(res.statusText);
         }
 
         gameData.me.isInGame = false;
