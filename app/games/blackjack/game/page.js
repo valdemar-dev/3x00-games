@@ -80,7 +80,7 @@ export default function BlackjackApp() {
   // useEffect fetch calls? so i do it the old fashioned way
   if (loading) {
     return (
-      <div></div>
+      <div id={styles.page}></div>
     )
   }
 
@@ -111,6 +111,7 @@ export default function BlackjackApp() {
 
   const drawCard = async () => {
     cardFlip();
+    setLoading(true);
 
     await fetch("/api/games/blackjack/drawCard")
       .then(async (res) => {
@@ -132,11 +133,14 @@ export default function BlackjackApp() {
         me.cards.push(resJSON);
       })  
 
+    setLoading(false);
     return;
   };
 
   const stand = async () => {
     click();
+
+    setLoading(true);
 
     await fetch("/api/games/blackjack/stand")
       .then(async (res) => {
@@ -149,6 +153,7 @@ export default function BlackjackApp() {
         gameData.me.gameStatus = "stand";
       })
 
+    setLoading(false);
     return;
   };
 

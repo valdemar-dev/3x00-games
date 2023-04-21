@@ -144,6 +144,8 @@ class Game {
     if (this.isGameOver === true) return;
 
     const updateUserBalance = async (id, amount) => {
+      if (amount === 0) return;
+
       await prisma.userWallet.update({
         where: {
           userId: id,
@@ -155,8 +157,6 @@ class Game {
     };
 
     this.players.forEach(async (player) => {
-      if (player.bet <= 0) return;
-
       if (player.cardTotal > 21) {
         // ***BUST***
         await updateUserBalance(player.id, (player.bet * -1)); 
