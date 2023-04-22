@@ -73,8 +73,6 @@ export default function BlackjackApp() {
     return () => clearInterval(dataInterval);
   }, []);
 
-
-
   const mapCards = (cards) => {
     return cards.map((card) => {
       return (
@@ -101,22 +99,19 @@ export default function BlackjackApp() {
   };
 
   const drawCard = async () => {
-    cardFlip();
-
-    setLoading(true);
-    gameData.me.isInGame = false;
-
     await fetch("/api/games/blackjack/drawCard");
-    getData();
-
+    await getData().then(() => {
+      cardFlip();
+    });
+    
     return;
   };
 
   const stand = async () => {
-    click();
-
     await fetch("/api/games/blackjack/stand");
-    getData();
+    await getData().then(() => {
+      click();
+    });
 
     return;
   };
@@ -173,8 +168,8 @@ export default function BlackjackApp() {
     <div id={styles.page}>
       <h1>BJ</h1>
 
-      <div id={styles.game_alert} ref={gameAlert}>
-
+      <div id={styles.game_alert}>
+        {gameData.statusMessage}
       </div>
 
       <div id={styles.current_turn}>

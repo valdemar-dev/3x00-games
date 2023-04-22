@@ -62,6 +62,7 @@ class Game {
     //create game deck
     this.deck = new GameDeck();
 
+    this.statusMessage = "";
 
     //create player list
     this.players = [];
@@ -177,6 +178,7 @@ class Game {
       }
     });
 
+    this.statusMessage = "The game has ended!";
     this.isGameOver = true;
     return;
   }

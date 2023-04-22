@@ -8,7 +8,7 @@ export default function Coinflip() {
   const resultRef = useRef();
 
   useEffect(() => {
-    fetch("/api/user/get-wallet").then(async (result) => {
+    fetch("/api/user/getWallet").then(async (result) => {
       const wallet = await result.json();
 
       setUserWallet(wallet?.balance);

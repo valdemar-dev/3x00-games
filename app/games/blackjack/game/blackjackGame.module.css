@@ -23,11 +23,8 @@ div#page h1 {
 /* playing cards */
 #card_container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
   height: fit-content;
+  position: relative;
 }
 
 .card {
@@ -49,6 +46,25 @@ div#page h1 {
 
   background-color: black;
   background: linear-gradient(to top right, black, rgb(12,12,12));
+
+  animation-duration: 0.5s;
+  animation-name: card_load;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+
+  opacity: 0%;
+}
+
+/* load-in animation for card */
+@keyframes card_load {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    opacity: 100%;
+    transform: translateX(0%);
+  }
 }
 
 .card:not(:first-child) {

@@ -27,6 +27,7 @@ export async function GET(req) {
     currentTurn: game.currentTurn,
     isGameOver: game.isGameOver,
     me: game.players.find((player) => player.id === userId),
+    statusMessage: game.statusMessage,
   };
 
   if (gameData.currentTurn === "dealer") {
