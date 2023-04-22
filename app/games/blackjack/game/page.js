@@ -52,14 +52,11 @@ export default function BlackjackApp() {
     if (gameData?.me.win === true) {
       win();
       setIsGESoundPlayed(true);
-    };
-
-    if (gameData?.me.win === false) {
+    } else {
       loss();
       setIsGESoundPlayed(true);
-    }
+    };
 
-    console.log("Played winloss sound");
     return;
   }, [gameData]);
 
@@ -70,19 +67,13 @@ export default function BlackjackApp() {
     const dataInterval = setInterval(async () => {
       await getData();
       return;
-    }, 1500)
+    }, 2000)
 
     // clears interval when component unloads
     return () => clearInterval(dataInterval);
   }, []);
 
-  // next 13 loading page doesnt seem to apply for-
-  // useEffect fetch calls? so i do it the old fashioned way
-  if (loading) {
-    return (
-      <div id={styles.page}></div>
-    )
-  }
+
 
   const mapCards = (cards) => {
     return cards.map((card) => {
@@ -111,30 +102,12 @@ export default function BlackjackApp() {
 
   const drawCard = async () => {
     cardFlip();
+
     setLoading(true);
+    gameData.me.isInGame = false;
 
-    await fetch("/api/games/blackjack/drawCard")
-      .then(async (res) => {
-        if (!res.ok || !res) {
-          router.push("/games/blackjack/");
-          return console.log(res.statusText); 
-        }
-
-        const resJSON = await res.json();
-
-        // for some javascript magic reason, 
-        // gameData.me.cardTotal += n and me.cards.push(card);
-        // do not automatically update the data, instead we have to find the user in the gamedata player list
-        // yes, i know it's jank. but it seems to be the only way this works.
-        const me = gameData.players.find((player) => player.id === gameData.me.id);
-        
-        gameData.me.isInGame = false;
-        me.cardTotal += resJSON.value;
-        me.cards.push(resJSON);
-
-        setLoading(false);
-      })  
-
+    await fetch("/api/games/blackjack/drawCard");
+    getData();
 
     return;
   };
@@ -142,21 +115,8 @@ export default function BlackjackApp() {
   const stand = async () => {
     click();
 
-    setLoading(true);
-
-    await fetch("/api/games/blackjack/stand")
-      .then(async (res) => {
-        if (!res.ok || !res)  {
-          router.push("/games/blackjack/");
-          return console.log(res.statusText);
-        }
-
-        gameData.me.isInGame = false;
-        gameData.me.gameStatus = "stand";
-
-        setLoading(false);
-      })
-
+    await fetch("/api/games/blackjack/stand");
+    getData();
 
     return;
   };
@@ -165,7 +125,7 @@ export default function BlackjackApp() {
     return playerList.map((player) => {
       if (gameData.isGameOver === true) {
         if (player.win === true) {
-          player.bet = `Winner! ${player.bet}`;
+          if (!isNaN(player.bet)) player.bet = `Winner! ${player.bet}`;
         }
       }
 
@@ -202,6 +162,12 @@ export default function BlackjackApp() {
 
     return (`${player.username}s turn`);
   };
+
+  if (loading) {
+    return (
+      <div id={styles.page}></div>
+    )
+  }
 
   return (
     <div id={styles.page}>

@@ -134,8 +134,8 @@ class Game {
     while (this.dealer.cardTotal < 18) {
       this.dealer.cards.push(this.deck.drawCard());
     }
-
-    this.endGame();
+    
+    return this.endGame();
   }
 
   endGame() {

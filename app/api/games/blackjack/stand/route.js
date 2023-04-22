@@ -42,6 +42,5 @@ export async function GET(req) {
     game.currentTurn = nextTurnHolder.id;
   }
 
-  //return new game data
   return new Response("OK.");
 }
