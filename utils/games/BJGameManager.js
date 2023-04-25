@@ -176,6 +176,10 @@ class Game {
           // ***LOSS***
           await updateUserBalance(player.id, (player.bet * -1));
         }
+      } else if (player.cards.length >= 5) {
+        await updateUserBalance(player.id, (player.bet));
+
+        player.win = true;
       } else {
         player.win = false;
       }
