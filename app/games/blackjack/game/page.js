@@ -147,12 +147,12 @@ export default function BlackjackApp() {
   };
 
   const leaveGame = async () => {
-    fetch("/api/games/blackjack/leaveGame");
-
-    alert("You are leaving the game!");
-
     router.push("/games/blackjack");
-    return router.refresh();
+    router.refresh();
+
+    await fetch("/api/games/blackjack/leaveGame");
+
+    return alert("You are leaving the game!");
   };
 
   const getCurrentTurnUsername = () => {
