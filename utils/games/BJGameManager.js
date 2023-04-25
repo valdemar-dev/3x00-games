@@ -161,6 +161,7 @@ class Game {
       if (player.cardTotal > 21) {
         // ***BUST***
         await updateUserBalance(player.id, (player.bet * -1)); 
+        player.win = false;
       } else if (player.cardTotal === 21 && this.dealer.cardTotal !== 21) {
         // ***BLACKJACK***
         await updateUserBalance(player.id, (player.bet));
@@ -175,6 +176,8 @@ class Game {
           // ***LOSS***
           await updateUserBalance(player.id, (player.bet * -1));
         }
+      } else {
+        player.win = false;
       }
     });
 

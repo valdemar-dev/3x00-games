@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import styles from "./blackjackGame.module.css";
 import useSound from "use-sound"; 
@@ -21,8 +21,7 @@ export default function BlackjackApp() {
   const [win] = useSound("/win.wav");
   const [loss] = useSound("/loss.wav");
   const [click] = useSound("/click.mp3");
-
-  const gameAlert = useRef(null);
+  const [click2] = useSound("/click2.wav", { volume: 0.50 });
 
   const getData = async () => {
     fetch("/api/games/blackjack/getGameData")
@@ -79,8 +78,9 @@ export default function BlackjackApp() {
         <div 
           className={styles.card}
           key={`${card.face}${card.house}`}
+          onMouseEnter={() => {click2()}}
         >
-          <span className={styles.card_tl}>
+          <span className={`${styles.card_tl} ${styles.card_indicator}`}>
             {card.face} 
             <img
               src={`/${card.house}.svg`} alt="card house" height="20px"/>
@@ -88,7 +88,11 @@ export default function BlackjackApp() {
 
           <span className={styles.card_center}>{card.face}</span>
 
-          <span className={styles.card_br}>
+          <img
+            className={styles.card_center_image}
+            src={`/${card.house}.svg`} alt="card house" height="140px"/>
+
+          <span className={`${styles.card_br} ${styles.card_indicator}`}>
             {card.face} 
             <img
               src={`/${card.house}.svg`} alt="card house" height="20px"/>
@@ -125,10 +129,13 @@ export default function BlackjackApp() {
       }
 
       return (
-        <div key={player.id} className={styles.player}>
+        <div 
+          key={player.id}
+          className={styles.player}
+        >
             <p 
               className={styles.player_name}>
-            {player.isInGame ? <span><b>{player.username}</b> | {player.gameStatus}</span> : <s><b>{player.username}</b> | {player.gameStatus}</s>}
+            {player.isInGame ? <span><b>{player.username}</b> | {player.gameStatus}</span> : <span><s><b>{player.username}</b></s> | {player.gameStatus}</span>}
             </p>
 
           <div id={styles.card_container}>

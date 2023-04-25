@@ -44,21 +44,36 @@ div#page h1 {
 
   border-radius: 10px;
 
-  background-color: black;
-  background: linear-gradient(to top right, black, rgb(12,12,12));
+  background: rgb(9,9,121);
+  background: linear-gradient(45deg, rgba(9,9,121,1) 26%, rgba(250,0,255,1) 100%);
 
-  animation-duration: 0.5s;
+  animation-duration: .8s;
   animation-name: card_load;
-  animation-fill-mode: forwards;
-  animation-timing-function: linear;
+  animation-timing-function: ease-out;
 
-  opacity: 0%;
+  opacity: 100%;
+
+  box-shadow: -5px 6px 5px 0px rgba(0,0,0,0.75);
+  -webkit-box-shadow: -5px 6px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: -5px 6px 5px 0px rgba(0,0,0,0.75);
+
+  overflow: hidden;
+
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+}
+
+.card:hover {
+  scale: 1.07;
+  rotate: -3deg;
+
+  transform: translateY(-10%);
 }
 
 /* load-in animation for card */
 @keyframes card_load {
   0% {
-    transform: translateX(100%);
+    transform: translateX(99%);
   }
 
   100% {
@@ -73,35 +88,44 @@ div#page h1 {
 
 
 /* text that shows the cards house and value */
-.card .card_tl {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-
+.card_indicator {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  position: absolute;
+
+  font-size: 1.2rem;
+}
+
+.card_indicator img {
+  opacity: 80%;
+}
+
+.card .card_tl {
+  top: 0.5rem;
+  left: 0.5rem;
 }
 
 .card .card_br {
-  position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
   rotate: 180deg;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .card .card_center {
-  transform: translatex(-50%);
+  position: absolute;
 
   font-size: 1.2rem;
-
-  text-align: center;
+  z-index: 10;
 }
 
+.card .card_center_image {
+  position: absolute;
+
+  opacity: 20%;
+  font-size: 1.2rem;
+}
 
 /* list of players */
 #player_list {
@@ -124,8 +148,8 @@ div#page h1 {
 }
 
 .player_name {
-  font-weight: 500;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 1.2rem;
 }
 
 .card_total {
@@ -216,7 +240,6 @@ div#game_tools {
   font-size: 0.8rem;
 }
 
-
 /* current turn */
 #current_turn {
   position: fixed;
@@ -240,4 +263,6 @@ div#game_tools {
   left: 0;
   right: 0;
   text-align: center;
+  padding-block: 1rem;
+  font-size: 2rem;
 }
