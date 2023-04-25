@@ -61,8 +61,6 @@ export default function BlackjackApp() {
 
   // fetches data at a 1,5 second interval
   useEffect(() => {
-    getData();
-
     const dataInterval = setInterval(async () => {
       await getData();
       return;
