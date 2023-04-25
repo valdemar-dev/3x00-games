@@ -46,12 +46,9 @@ export async function GET(req) {
 
   game.players.splice(playerIndex);
 
-  console.log(game.players.length);
   if (game.players.length < 1) {
-    bjGameManager.deleteGame(game.id);
+    await bjGameManager.deleteGame(game.id);
   }
-
-
 
   return new Response("OK.");
 }
