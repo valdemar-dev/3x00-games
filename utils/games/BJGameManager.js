@@ -207,11 +207,7 @@ class BJGameManager {
   deleteGame(gameId) {
     const gameInList = this.games.find(game => game.id === gameId);
 
-    console.log(gameInList);
     this.games.splice(this.games.indexOf(gameInList));
-
-    console.log(this.games);
-    // this method might be horribly inefficient, will double check later, though.
   }
 
   getGameFromUserId(userId) {
