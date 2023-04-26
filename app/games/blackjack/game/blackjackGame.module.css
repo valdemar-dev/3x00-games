@@ -5,9 +5,10 @@ div#page {
 
   color: white;
 
-  background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='42' height='40' patternTransform='scale(2) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(0, 0%, 5%, 1)'/><path d='M11 6a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5 5 5 0 015 5' transform='translate(1,0)' stroke-width='1' stroke='none' fill='hsla(259, 0%, 18%, 1)'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
+  background-color: #000000;
 
-  min-height: 100vh;
+  min-height: 120vh;
+  overflow-x: hidden;
 }
 
 @media screen and (max-width: 600px) {
@@ -20,11 +21,29 @@ div#page h1 {
   margin-top: 0;
 }
 
-/* playing cards */
+/* 
+* playing cards
+*/
 #card_container {
   display: flex;
-  height: fit-content;
   position: relative;
+  height: fit-content;
+}
+
+img.card_container_image {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+  z-index: 0;
+
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .card {
@@ -50,8 +69,9 @@ div#page h1 {
   animation-duration: .8s;
   animation-name: card_load;
   animation-timing-function: ease-out;
+  animation-fill-mode:forwards;
 
-  opacity: 100%;
+  opacity: 0%;
 
   box-shadow: -5px 6px 5px 0px rgba(0,0,0,0.75);
   -webkit-box-shadow: -5px 6px 5px 0px rgba(0,0,0,0.75);
@@ -63,12 +83,6 @@ div#page h1 {
   transition-timing-function: ease-out;
 }
 
-.card:hover {
-  scale: 1.07;
-  rotate: -3deg;
-
-  transform: translateY(-10%);
-}
 
 /* load-in animation for card */
 @keyframes card_load {
@@ -80,6 +94,13 @@ div#page h1 {
     opacity: 100%;
     transform: translateX(0%);
   }
+}
+
+.card:hover {
+  scale: 1.07;
+  rotate: -1deg;
+
+  top: -1.5rem;
 }
 
 .card:not(:first-child) {
@@ -139,17 +160,26 @@ div#page h1 {
 }
 
 #player_list .player {
-  overflow: hidden;
   min-width: 0;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  overflow: hidden;
 }
 
 .player_name {
-  font-weight: 600;
+  font-weight: 400;
   font-size: 1.2rem;
+
+  position: relative;
+  z-index: 2;
+
+  margin-bottom: 3rem;
 }
 
 .card_total {

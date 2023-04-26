@@ -61,6 +61,8 @@ export default function BlackjackApp() {
 
   // fetches data at a 1,5 second interval
   useEffect(() => {
+    getData();
+
     const dataInterval = setInterval(async () => {
       await getData();
       return;
@@ -70,13 +72,17 @@ export default function BlackjackApp() {
     return () => clearInterval(dataInterval);
   }, []);
 
-  const mapCards = (cards) => {
+  const mapCards = (cards, isDealer) => {
+    let cardIndex = 1;
     return cards.map((card) => {
+      cardIndex++;
+
       return (
         <div 
           className={styles.card}
           key={`${card.face}${card.house}`}
           onMouseEnter={() => {click2()}}
+          style={{ animationDelay: isDealer ? `${cardIndex * 300}ms` : "0ms"}}
         >
           <span className={`${styles.card_tl} ${styles.card_indicator}`}>
             {card.face} 
@@ -133,14 +139,21 @@ export default function BlackjackApp() {
         >
             <p 
               className={styles.player_name}>
-            {player.isInGame ? <span><b>{player.username}</b> | {player.gameStatus}</span> : <span><s><b>{player.username}</b></s> | {player.gameStatus}</span>}
+            {player.isInGame ? <span>{player.username} </span> : <span><s>{player.username}</s> </span>}
             </p>
 
           <div id={styles.card_container}>
             {mapCards(player.cards)}
+
+            <img 
+              className={styles.card_container_image}
+              src={"/background.svg"}
+              height={"560px"}
+            />
           </div>
+
+
           <span className={styles.card_total}>{player.cardTotal}</span>
-          <p className={styles.player_bet}>{player.bet}</p>
         </div>
       )
     })
@@ -186,7 +199,14 @@ export default function BlackjackApp() {
       <div>
         <div id={styles.dealer}>
           <p className={styles.player_name}>Dealer</p>
-          <div id={styles.card_container}>{mapCards(gameData.dealerCards)}</div>
+          <div id={styles.card_container}>
+            {mapCards(gameData.dealerCards, true)}
+            <img 
+              className={styles.card_container_image}
+              src={"/background.svg"}
+              height={"560px"}
+            />
+          </div>
           <span className={styles.card_total}>{gameData.dealerTotal}</span>
         </div>
 
@@ -217,8 +237,6 @@ export default function BlackjackApp() {
           <button onClick={async () => {await leaveGame()}}>leave</button>
         </div>
       </div>
-
-      <p id={styles.game_id}>Game ID: {gameData.id}</p>
     </div>
   )
 }
