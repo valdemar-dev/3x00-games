@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import hashText from "@/utils/hashText";
 import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
+import Link from "next/link";
 
 export default function Register() {
   const infoBox = useRef();
@@ -33,13 +35,16 @@ export default function Register() {
     if (result.status === 200) router.push("/login");
   };
   return(
-    <div>
-      <h1>Register</h1>
+    <div className={styles.register}>
       <div ref={infoBox}></div>
       <form onSubmit={(event) => {handleRegister(event)}}>
-        <input type="text" placeholder="username" required/>
-        <input type="password" placeholder="password" required/>
-        <button type="submit">Register</button>
+        <h2>Register</h2>
+        <input type="text" placeholder="Enter your username" required/>
+        <input type="password" placeholder="Create a strong password" required/>
+        <div className={styles.button_group}>
+          <button className="button button_primary" type="submit">Register</button>
+          <Link href="/login" className="unobstructive">Already a member?</Link>
+        </div>
       </form>
     </div>
   )

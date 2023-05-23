@@ -9,12 +9,10 @@ export default function Blackjack() {
     event.preventDefault();
 
     // TODO: parse multiple ids
-    const playerIds = event.target[0].value;
-    const bet = event.target[1].value || 100;
+    const bet = event.target[0].value;
 
     const data = {
       bet: bet,
-      playerIds: playerIds,
     };
 
     const options = {
@@ -34,9 +32,6 @@ export default function Blackjack() {
     <div>
       <h1>Blackjack!</h1>
       <form onSubmit={(event) => {createGame(event)}}>
-        <label htmlFor="idlist">Enter list of user ID&apos;s separated by a comma and a space.</label><br/>
-        <input name="idlist" type="text"/><br/>
-
         <label htmlFor="bet">Enter bet: (cannot be larger than balance or less than 0)</label><br/>
         <input name="bet" type="number" required/><br/>
 

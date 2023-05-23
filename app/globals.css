@@ -1,21 +1,212 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Source+Sans+Pro&display=swap');
 
+:root {
+  --primary: #f6f6f6;
+  --primary-darker: #d9d9d9;
+  --secondary: #101528;
+  --secondary-lighter: #1a213f;
+  --highlight-one: #ff533f;
+  --highlight-two: #0a0e19;
+  --highlight-three: #629460;
+  --accent: #7826ff;
+
+  --fancy-font: 'Playfair Display', serif;
+  --regular-font: 'Inter', sans-serif; 
+}
+
+::-moz-selection {
+  color: var(--primary);
+  background: var(--accent);
+}
+
+::selection {
+  color: var(--primary);
+  background: var(--accent);
+}
+
 html,body {
+  font-size: 1.15rem;
+
   margin: 0;
   padding: 0;
 
-
-  --fancy-font: 'Playfair Display', serif;
-
-  --regular-font: "Source Sans Pro", sans-serif; 
+  color: var(--primary);
+  background-color: var(--secondary);
 
   font-family: var(--regular-font);
+}
+
+body {
+  margin-block: clamp(5rem, 8vw, 10rem);
+}
+
+a {
+  width: fit-content;
+  color: var(--primary);
+  text-decoration: none;
+
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+
+  transition-property: all;
+  position: relative;
+
+  cursor: pointer;
+}
+
+a:hover {
+  transform: translateY(-5px); 
 }
 
 h1 {
-  font-family: var(--fancy-font);
+  font-size: 2.5rem;
+}sda
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 0px;
+  font-family: var(--regular-font);
 }
 
-h2,h3,h4,h5,h6 {
-  font-family: var(--regular-font);
+p {
+  color: var(--primary-darker);
+}
+
+.link_primary {
+  color: var(--highlight-one);
+}
+
+.link_primary:hover {
+  color: var(--primary);
+}
+
+.link_secondary {
+  color: var(--primary);
+}
+
+.link_secondary:hover {
+  color: var(--primary-darker);
+}
+
+.button {
+  padding-block: 0.7rem;
+  padding-inline: 1rem;
+
+  border-radius: 7px;
+
+  border: none;
+
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+  transition-property: all;
+  font-size: 1.15rem;
+}
+
+.button_slim {
+  border-radius: 4px;
+
+  font-size: 1rem;
+  padding-block: 0.4rem;
+  padding-inline: 0.7rem;
+
+  border: none;
+
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+  transition-property: all;
+  font-size: 1.15rem;
+}
+
+.button_primary {
+  background-color: var(--highlight-one);
+  color: var(--secondary);
+}
+
+.button_primary:hover {
+  color: var(--primary);
+  box-shadow: 0 5px 70px 0px var(--highlight-one);
+}
+
+.button_secondary {
+  background-color: var(--highlight-two);
+  color: var(--primary);
+}
+
+.button_secondary:hover {
+  color: var(--highlight-one);
+}
+
+.button_group {
+  display: flex;
+
+  gap: 1rem;
+}
+
+.nav {
+  margin-inline: clamp(5rem, 8vw, 10rem);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+
+  height: 4rem;
+  align-items: center;
+
+  opacity: 0;
+  animation: fadeIn 0.2s ease-in-out 500ms forwards;
+}
+
+.nav_logo {
+  width: 50%;
+}
+
+.nav_logo a {
+  background: linear-gradient(to right, var(--highlight-one), var(--accent));
+  color: transparent;
+  background-clip: text;
+
+  font-size: 1.2rem;
+}
+
+.nav_hide {
+  width: 50%;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 3rem;
+}
+
+.unobstructive {
+  filter: opacity(30%);
+}
+
+.highlight_tag {
+  background-color: var(--highlight-two);
+  color: var(--highlight-one);
+
+  border-radius: 4px;
+
+  font-size: 1rem;
+  padding-block: 0.4rem;
+  padding-inline: 0.7rem;
+
+  border: none;
+
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+  transition-property: all;
+  font-size: 1.15rem;
+}
+
+@keyframes fadeIn {
+  0% {
+      opacity: 0%;
+  }
+  
+  100% { 
+      opacity: 100%;
+  }
 }

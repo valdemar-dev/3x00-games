@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
-import styles from "./blackjackGame.module.css";
+import styles from "./page.module.css";
 import useSound from "use-sound"; 
 
 export default function BlackjackApp() {
@@ -14,14 +14,12 @@ export default function BlackjackApp() {
 
   const router = useRouter();
 
-  const cookies = new Cookies();
-
   // sound effects
   const [cardFlip] = useSound("/card-flip.wav");
   const [win] = useSound("/win.wav");
   const [loss] = useSound("/loss.wav");
   const [click] = useSound("/click.mp3");
-  const [click2] = useSound("/click2.wav", { volume: 0.50 });
+  const [click2] = useSound("/click2.wav", { volume: 0.30 });
 
   const getData = async () => {
     fetch("/api/games/blackjack/getGameData")
@@ -42,47 +40,41 @@ export default function BlackjackApp() {
       })
   };
   
-  // plays win or loss sound
-  useEffect(() => {
-    if (!gameData) return;
-    if (gameData?.isGameOver === false) return;
-    if (isGESoundPlayed === true) return;
-
-    if (gameData?.me.win === true) {
-      win();
-      setIsGESoundPlayed(true);
-    } else {
-      loss();
-      setIsGESoundPlayed(true);
-    };
-
-    return;
-  }, [gameData]);
-
-  // fetches data at a 1,5 second interval
   useEffect(() => {
     getData();
 
     const dataInterval = setInterval(async () => {
       await getData();
       return;
-    }, 2000)
+    }, 1000)
 
     // clears interval when component unloads
     return () => clearInterval(dataInterval);
   }, []);
 
-  const mapCards = (cards, isDealer) => {
-    let cardIndex = 1;
-    return cards.map((card) => {
-      cardIndex++;
+  useEffect(() => {
+    if (!gameData) return;
+    
+    if (isGESoundPlayed == false && gameData?.isGameOver === true) {
+      if (gameData?.playerWin === true) {
+        win();
+        setIsGESoundPlayed(true);
+      } else {
+        loss();
+        setIsGESoundPlayed(true);
+      };
+    }
 
+    return;
+  }, [gameData]);
+
+  const mapCards = (cards) => {
+    return cards.map((card) => {
       return (
         <div 
           className={styles.card}
           key={`${card.face}${card.house}`}
           onMouseEnter={() => {click2()}}
-          style={{ animationDelay: isDealer ? `${cardIndex * 300}ms` : "0ms"}}
         >
           <span className={`${styles.card_tl} ${styles.card_indicator}`}>
             {card.face} 
@@ -108,55 +100,16 @@ export default function BlackjackApp() {
 
   const drawCard = async () => {
     await fetch("/api/games/blackjack/drawCard");
-    await getData().then(() => {
-      cardFlip();
-    });
+    cardFlip();
     
     return;
   };
 
   const stand = async () => {
     await fetch("/api/games/blackjack/stand");
-    await getData().then(() => {
-      click();
-    });
-
+    click();
+    
     return;
-  };
-
-  const mapPlayers = (playerList) => {
-    return playerList.map((player) => {
-      if (gameData.isGameOver === true) {
-        if (player.win === true) {
-          if (!isNaN(player.bet)) player.bet = `Winner! ${player.bet}`;
-        }
-      }
-
-      return (
-        <div 
-          key={player.id}
-          className={styles.player}
-        >
-            <p 
-              className={styles.player_name}>
-            {player.isInGame ? <span>{player.username} </span> : <span><s>{player.username}</s> </span>}
-            </p>
-
-          <div id={styles.card_container}>
-            {mapCards(player.cards)}
-
-            <img 
-              className={styles.card_container_image}
-              src={"/background.svg"}
-              height={"560px"}
-            />
-          </div>
-
-
-          <span className={styles.card_total}>{player.cardTotal}</span>
-        </div>
-      )
-    })
   };
 
   const leaveGame = async () => {
@@ -168,14 +121,6 @@ export default function BlackjackApp() {
     return alert("You are leaving the game!");
   };
 
-  const getCurrentTurnUsername = () => {
-    if (gameData.currentTurn === "dealer") return "Dealers turn";
-
-    const player = gameData.players.find((player) => player.id === gameData.currentTurn);
-
-    return (`${player.username}s turn`);
-  };
-
   if (loading) {
     return (
       <div id={styles.page}></div>
@@ -183,56 +128,37 @@ export default function BlackjackApp() {
   }
 
   return (
-    <div id={styles.page}>
-      <h1>BJ</h1>
+    <div className={styles.blackjack}>
+      <div id={styles.player}>
+        <p
+          className={styles.player_name}>
+        {gameData.isCurrentTurnPlayer ? <span>{gameData.player.username} </span> : <span><s>{gameData.player.username}</s> </span>}
+        </p>
 
-      <div id={styles.game_alert}>
-        {gameData.statusMessage}
-      </div>
-
-      <div id={styles.current_turn}>
-        <span>
-          {getCurrentTurnUsername()}
-        </span>
-      </div>
-
-      <div>
-        <div id={styles.dealer}>
-          <p className={styles.player_name}>Dealer</p>
-          <div id={styles.card_container}>
-            {mapCards(gameData.dealerCards, true)}
-            <img 
-              className={styles.card_container_image}
-              src={"/background.svg"}
-              height={"560px"}
-            />
-          </div>
-          <span className={styles.card_total}>{gameData.dealerTotal}</span>
+        <div className={styles.card_container}>
+          {mapCards(gameData.player.cards)}
         </div>
 
-
-      <div id={styles.player_list}>
-        {mapPlayers(gameData.players)}
+        <p className={styles.card_total}>{gameData.player.cardTotal}</p>
       </div>
 
+      <div id={styles.dealer}>
+        <p className={styles.player_name}>Dealer</p>
+        <div className={styles.card_container}>
+          {mapCards(gameData.dealerCards)}
+        </div>
+        <p className={styles.card_total}>{gameData.dealerTotal}</p>
       </div>
 
       <div id={styles.game_tools}>
         <div id={styles.game_tools_inner}>
           <button 
             onClick={async () => {await drawCard()}}
-            disabled={cookies.get("userId") !== gameData.currentTurn || gameData.me.isInGame === false}
           >Hit</button>
 
           <button
             onClick={async () => {await stand()}}
-            disabled={cookies.get("userId") !== gameData.currentTurn || gameData.me.isInGame === false}
           >Stand</button>
-
-          <button
-            onClick={async () => {await doubleDown()}}
-            disabled={cookies.get("userId") !== gameData.currentTurn || gameData.me.isInGame === false}
-          >Double down</button>
 
           <button onClick={async () => {await leaveGame()}}>leave</button>
         </div>

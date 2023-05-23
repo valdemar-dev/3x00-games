@@ -19,36 +19,20 @@ export async function GET(req) {
     status: 403,
   });
 
-  const player = game.players.find((player) => player.id === userId);
-  const playerIndex = game.players.indexOf(player);
-
-  if (playerIndex < 0) {
-    return new Response("User is not in a game.", {
-      status: 403,
-    });
-  }
-
-  // punish the user if they disconnect before the game is over
+  // remove bet if they left whilst the game was still going on
   if (game.isGameOver === false) {
     await prisma.userWallet.update({
       where: {
         userId: userId,
       },
       data: {
-        balance: { decrement: player.bet }, 
+        balance: { decrement: parseInt(game.player.bet) },
       },
-    }).catch(() => {
-        return new Response("Could not remove balance from user.", {
-          status: 500,
-        });
-      });
+    });
   }
 
-  game.players.splice(playerIndex);
-
-  if (game.players.length < 1) {
-    await bjGameManager.deleteGame(game.id);
-  }
+  // destroy game
+  bjGameManager.deleteGame(game.id);
 
   return new Response("OK.");
 }

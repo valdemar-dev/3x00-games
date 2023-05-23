@@ -4,11 +4,12 @@ import validateSessionData from "@/utils/validateSessionData";
 export async function POST(req) {
   const sessionToken = req.cookies.get("sessionToken")?.value;
   const userId = req.cookies.get("userId")?.value;
+  const username = req.cookies.get("username")?.value;
 
-  if (await validateSessionData(sessionToken, userId) === false) {
+  if (await validateSessionData(sessionToken, userId, username) === false) {
     return new Response("Invalid session token or user id.", {
       status: 401,
-    });
+   });
   }
 
   const reqJSON = await req.json();
@@ -38,7 +39,7 @@ export async function POST(req) {
   // make sure that users do not go into neg account bal
   if (bet > 10000 || bet > user.wallet.balance) {
     return new Response("Bet is too large!", {
-      status: 401,
+      status: 403,
     });
   }
 

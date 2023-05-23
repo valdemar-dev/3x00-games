@@ -53,69 +53,39 @@ class GameDeck {
 }
 
 class Game {
-  constructor (players) {
-    //give unique id to game so that it can be found later.
-    this.isGameOver = false;
-
+  constructor (playerId, playerUsername, playerBet) {
     this.gameId = crypto.randomUUID();
 
     //create game deck
     this.deck = new GameDeck();
 
-    this.statusMessage = "";
+    this.isGameOver = false;
+    this.playerWin = false;
 
-    //create player list
-    this.players = [];
+    this.isCurrentTurnPlayer = true;
 
-    players.forEach((player) => {
-      this.players.push({
-        id: player.id,
-        bet: player.bet,
-        username: player.username,
-        win: false,
-        gameStatus: "playing",
-        isInGame: true,
+    this.player = {
+      id: playerId,
+      username: playerUsername,
+      bet: playerBet,
+      cards: [
+        this.deck.drawCard(),
+        this.deck.drawCard(),
+      ],
 
-        cards: [
-          this.deck.drawCard(),
-          this.deck.drawCard(),
-        ],
+      get cardTotal() {
+        let total = 0;
 
-        get cardTotal() {
-          let total = 0;
+        this.cards.forEach((card) => {
+          total += card.value;
+        });
 
-          this.cards.forEach((card) => {
-            total += card.value;
-          });
-
-          return total;
-        },
-      });
-    });
-    
-    this.players?.forEach((player) => {
-      if (player.cardTotal >= 21) {
-        player.isInGame = false;
-
-        if (player.cardTotal === 21) {
-          player.gameStatus = "blackjack!";
-        } else {
-          player.gameStatus = "bust";
-        }
-      }
-    });
-
-    const firstTurnHolder = this.players.find((player) => player.isInGame === true);
-
-    if(!firstTurnHolder) {
-      this.currentTurn = "dealer";
-    } else {
-      this.currentTurn = firstTurnHolder.id;
-    }
+        return total;
+      },
+    };
 
     this.dealer = {
       cards: [
-        this.deck.drawCard(),
         this.deck.drawCard(),
       ],
       
@@ -131,25 +101,17 @@ class Game {
     };
   }
 
-  doDealerTurn() {
-    while (this.dealer.cardTotal < 18) {
-      this.dealer.cards.push(this.deck.drawCard());
-    }
-    
-    return this.endGame();
-  }
-
   endGame() {
-    // prevents from giving people an infinite amount of money
-    // or removing an infinite amount of money
     if (this.isGameOver === true) return;
 
-    const updateUserBalance = async (id, amount) => {
+    this.isGameOver = true;
+
+    const updateUserBalance = async (amount) => {
       if (amount === 0) return;
 
       await prisma.userWallet.update({
         where: {
-          userId: id,
+          userId: this.player.id,
         },
         data: {
           balance: { increment: amount },
@@ -157,37 +119,36 @@ class Game {
       }) || null;
     };
 
-    this.players.forEach(async (player) => {
-      if (player.cardTotal > 21) {
-        // ***BUST***
-        await updateUserBalance(player.id, (player.bet * -1)); 
-        player.win = false;
-      } else if (player.cardTotal === 21 && this.dealer.cardTotal !== 21) {
-        // ***BLACKJACK***
-        await updateUserBalance(player.id, (player.bet));
-        player.win = true;
-      } else if (player.cardTotal < 21) {
-        // ***NORMAL***
-        if (this.dealer.cardTotal > 21 || this.dealer.cardTotal < player.cardTotal) {
-          // ***WIN***
-          await updateUserBalance(player.id, (player.bet));
-          player.win = true;
-        } else if (this.dealer.cardTotal >= player.cardTotal) {
-          // ***LOSS***
-          await updateUserBalance(player.id, (player.bet * -1));
-        }
-      } else if (player.cards.length >= 5) {
-        await updateUserBalance(player.id, (player.bet));
-
-        player.win = true;
+    // player buest
+    if (this.player.cardTotal > 21) {
+      return updateUserBalance((this.player.bet * -1));
+    } 
+    
+    // player blackjack
+    else if (this.player.cardTotal === 21) {
+      if (this.dealer.cardTotal === 21)  {
+        this.playerWin = true;
+        return;
       } else {
-        player.win = false;
+        this.playerWin = true;
+        return updateUserBalance(this.player.bet);
       }
-    });
+    } 
 
-    this.statusMessage = "The game has ended!";
-    this.isGameOver = true;
-    return;
+    // player under 21
+    else {
+      if (this.dealer.cardTotal > 21) {
+        this.playerWin = true;
+        return updateUserBalance(this.player.bet);
+      } 
+
+      if (this.dealer.cardTotal >= this.player.cardTotal) {
+        return updateUserBalance((this.player.bet * -1));
+      } else {
+        this.playerWin = true;
+        return updateUserBalance(this.player.bet);
+      }
+    }
   }
 }
 
@@ -196,16 +157,10 @@ class BJGameManager {
     this.games = [];
   }
   
-  createGame(players) {
-    if (players.length < 1) {
-      return false;
-    }
-    
-    players.forEach((player) => {
-      if(!player.bet || !player.id) return false;
-    });
+  createGame(userId, username, bet) {
+    if (!userId || !username || !bet) return;
 
-    this.games.push(new Game(players));
+    this.games.push(new Game(userId, username, bet));
   }
 
   deleteGame(gameId) {
@@ -218,9 +173,7 @@ class BJGameManager {
     let resultGame = null;
 
     this.games.forEach((game) => {
-      game.players.forEach((player) => {
-        if (player.id === userId) resultGame = game;
-      })
+      if (game.player.id === userId) resultGame = game;
     });
 
     return resultGame;
@@ -230,9 +183,7 @@ class BJGameManager {
     let isPlayerInGame = false;
 
     this.games.forEach((game) => {
-      game.players.forEach((player) => {
-        if (player.id === userId) return isPlayerInGame = true;
-      });
+      if (game.player.id === userId) isPlayerInGame = true;
     });
 
     return isPlayerInGame;

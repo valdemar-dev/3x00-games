@@ -18,25 +18,21 @@ export async function GET(req) {
     status: 403,
   });
 
+  if (game.isCurrentTurnPlayer === false) {
+    if (game.dealer.cardTotal < 17) game.dealer.cards.push(game.deck.drawCard());
+    else if (game.dealer.cardTotal >= 17) {  
+      game.endGame();
+    } 
+  }
+
   const gameData = {
     id: game.gameId,
-    cards: game.deck.cards,
-    players: game.players,
-    dealerCards: [game.dealer.cards[0]],
-    dealerTotal: [game.dealer.cards[0].value],
-    currentTurn: game.currentTurn,
+    player: game.player,
+    dealerCards: game.dealer.cards,
+    dealerTotal: game.dealer.cardTotal,
+    isCurrentTurnPlayer: game.isCurrentTurnPlayer,
     isGameOver: game.isGameOver,
-    me: game.players.find((player) => player.id === userId),
-    statusMessage: game.statusMessage,
   };
-
-  if (gameData.currentTurn === "dealer") {
-    gameData.dealerCards = game.dealer.cards;
-    gameData.dealerTotal = game.dealer.cardTotal;
-
-    // easy way to do the dealer turn sneakily
-    game.doDealerTurn();
-  } 
 
   return new Response(JSON.stringify({gameData: gameData}));
 }

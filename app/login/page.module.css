@@ -1,0 +1,88 @@
+div.login {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.login form {
+    width: clamp(20rem, 20vw, 35rem);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.7rem;
+    gap: 1.7rem;
+    background-color: var(--highlight-two);
+    border-radius: 15px;
+    transition-duration: 0.2s;
+    border: 3px solid transparent;
+}
+
+.login form h2 {
+    opacity: 0;
+    animation: fade_in 0.5s ease-in-out 100ms forwards;
+}
+
+.login form input {
+    width: calc(100% - 2rem);
+    padding-block: 0.7rem;
+    padding-inline: 1rem;
+    border-radius: 7px;
+    border: none;
+    font-size: 1.15rem;
+    font-family: var(--regular-font);
+    transition-duration: 0.2s;
+    background-color: var(--secondary-lighter);
+    color: var(--primary);
+    border-radius: 7px;
+    caret-color: var(--primary);
+
+    opacity: 0;
+    animation: fade_in 0.4s ease-in-out 250ms forwards;
+}
+
+.login form a {
+    opacity: 0;
+    animation: fade_in 0.4s ease-in-out 250ms forwards;
+}
+
+.login form .button_group {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login form input:focus {
+    outline: 3px solid var(--highlight-one);
+}
+
+.login form button {
+    padding-block: 0.7rem;
+    padding-inline: 1rem;
+  
+    border-radius: 7px;
+  
+    border: none;
+  
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    transition-property: all;
+    font-size: 1.15rem;
+
+    opacity: 0;
+    animation: fade_in 0.8s ease-in-out 300ms forwards;
+}
+
+.login form button:hover {
+    transform: translateY(-5px);
+}
+
+@keyframes fade_in {
+    0% {
+        opacity: 0%;
+    }
+    
+    100% { 
+        opacity: 100%;
+    }
+}

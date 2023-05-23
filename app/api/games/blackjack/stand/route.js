@@ -18,29 +18,13 @@ export async function GET(req) {
     status: 403,
   }); 
   
-  if (game.currentTurn !== userId) {
+  if (game.isCurrentTurnPlayer === false) {
     return new Response("It's not your turn.", {
       status: 403,
     });
   } 
 
-  const player = game.players.find((player) => player.id === userId);
-
-  if (!player) return new Response("Player not found in game.", {
-    status: 403,
-  });
-
-  player.isInGame = false;
-  player.gameStatus = "Stand";
-
-  const nextTurnHolder = game.players.find((player) => player.isInGame === true);
-  
-  if (!nextTurnHolder) {
-    game.currentTurn = "dealer";
-    game.doDealerTurn();
-  } else {
-    game.currentTurn = nextTurnHolder.id;
-  }
+  game.isCurrentTurnPlayer = false;
 
   return new Response("OK.");
 }

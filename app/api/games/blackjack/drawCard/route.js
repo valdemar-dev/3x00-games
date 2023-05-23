@@ -18,7 +18,7 @@ export async function GET(req) {
     status: 403,
   }); 
   
-  if (game.currentTurn !== userId) {
+  if (game.isCurrentTurnPlayer === false) {
     return new Response("It's not your turn.", {
       status: 403,
     });
@@ -26,26 +26,17 @@ export async function GET(req) {
 
   const card = game.deck.drawCard();
 
-  const player = game.players.find((player) => player.id === userId);
+  const player = game.player;
 
   player.cards.push(card);
 
   if (player.cardTotal >= 21) {
-    player.isInGame = false;
+    game.isCurrentTurnPlayer = false;
 
     if (player.cardTotal > 21) {
       player.gameStatus = "Bust 🚫";
     } else {
       player.gameStatus = "Blackjack!";
-    }
-
-    const nextPlayer = game.players.find((player) => player.isInGame === true);
-
-    if (!nextPlayer) {
-      game.currentTurn = "dealer";
-      game.doDealerTurn();
-    } else {
-      game.currentTurn = nextPlayer.id;
     }
   }
 

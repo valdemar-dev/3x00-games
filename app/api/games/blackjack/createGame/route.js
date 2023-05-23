@@ -24,30 +24,9 @@ export async function POST(req) {
   const reqJSON = await req.json();
 
   // default to 0 incase users want to have a casual game
-  const bet = reqJSON.bet || 0;
-  const playerIds = reqJSON.playerIds || null;
+  const bet = parseInt(reqJSON.bet) || 0;
 
-  const playerList = [
-    {
-      id: userId,
-      bet: parseInt(bet),
-      username: username,
-    },
-  ];
-
-  if (playerIds) {
-    const playerIdsAsArray = playerIds.replace(/\s/g, "").split(",");
-
-    playerIdsAsArray.forEach((playerId) => {
-      playerList.push({
-        id: playerId,
-        bet: 100,
-        username: "Dummy username",
-      });
-    });
-  }
-
-  bjGameManager.createGame(playerList);
+  bjGameManager.createGame(userId, username, bet);
 
   return new Response("OK.")
 }

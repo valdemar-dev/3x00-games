@@ -6,13 +6,19 @@ import { useEffect, useState } from "react";
 export default function GamesLayout({ children }) {
   const router = useRouter();
 
-  // this is for auto-redirecting the user if they aren't logged in
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetch("/api/validateSessionData").then((result) => {
       if (!result.ok) router.push("/login"); 
+      setLoading(false);
       return;
     })
   }, [])
+
+  if (loading) return (
+    <div></div>
+  )
 
   return (
     <div>
