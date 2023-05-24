@@ -1,29 +1,27 @@
 "use client";
 
+import useSound from "use-sound";
+import styles from "./page.module.css";
 import { useEffect, useRef, useState } from "react";
 
 export default function Coinflip() {
-  const [ userWalletBalance, setUserWallet ] = useState(null);
+  const [coinflip] = useSound("/coinflip.mp3");
 
   const resultRef = useRef();
-
-  useEffect(() => {
-    fetch("/api/user/getWallet").then(async (result) => {
-      const wallet = await result.json();
-
-      setUserWallet(wallet?.balance);
-
-      return;
-    });
-
-    return;
-  }, []);
 
   const coinFlip = async (event) => {
     event.preventDefault();
 
+    coinflip();
+    resultRef.current.style.animation = `${styles.coinflip_loading} 0.3s linear forwards infinite`;
+
     const bet = event.target[0].value || 0;
     const headsOrTails = event.target[1].value || "heads";
+
+    if (!bet || bet < 1) {
+      return;
+      // INFORM THA THE BET IS BAD
+    }
 
     const data = {
       bet: bet, 
@@ -38,28 +36,25 @@ export default function Coinflip() {
       },
     };
 
-    const response = await fetch("/api/games/coinflip/", options);
+    const result = await fetch("/api/games/coinflip/", options);
 
-    if(!response.ok) return;
+    const resultJSON = await result.json();
 
-    const responseJSON = await response.json();
-
-    resultRef.current.innerHTML = responseJSON.result;
-    setUserWallet(responseJSON.newBalance);
-
-    return;
+    if (resultJSON.result === "heads") {
+      resultRef.current.style.animation = `${styles.coinflip_heads} 5s ease-out forwards`;
+    } else {
+      resultRef.current.style.animation = `${styles.coinflip_tails} 5s ease-out forwards`;
+    }
   }
 
   return (
-    <div>
+    <div className={styles.coinflip}>
       <h1>Coinflip!</h1>
-      <div ref={resultRef}></div>
-      <div>Coins: {userWalletBalance || "loading.."}</div>
-
+      <div id={styles.coin} ref={resultRef}>H</div>
       <form onSubmit={(event) => {coinFlip(event)}}>
-        <input type="number" placeholder="Bet" required/>
+        <input type="number" placeholder="Bet" required min={1}/>
 
-        <select>
+        <select required>
           <option value="heads">Heads</option>
           <option value="tails">Tails</option>
         </select>

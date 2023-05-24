@@ -14,70 +14,37 @@ export async function POST(req) {
 
   const reqJSON = await req.json();
 
-  let bet = reqJSON.bet;
+  const bet = parseInt(reqJSON.bet);
   const headsOrTails = reqJSON.headsOrTails; 
 
-  // we have to make sure that the provided betting information is valid or the code will not work
-  if (!bet || !headsOrTails || isNaN(bet) || parseInt(bet) < 0) {
-    return new Response("Incorrect bet information.", {
-      status: 401,
-    })
+  if (!bet || !headsOrTails || isNaN(bet) || bet <= 0) {
+    return new Response({ status: 401, })
   };
- 
-  bet = parseInt(bet);
 
-  const user = await prisma.user.findUnique({
-    where: {
-      sessionToken: req.cookies.get("sessionToken").value,
-    },
-    include: {
-      wallet: true,
-    },
-  });
-
-  // limit bet to 10k
-  // make sure that users do not go into neg account bal
-  if (bet > 10000 || bet > user.wallet.balance) {
-    return new Response("Bet is too large!", {
+  if (bet > 15000 || bet > await prisma.userWallet.findFirst({where: {userId: userId}}).balance) {
+    return new Response("Your bet is too large!", {
       status: 403,
-    });
+    })
   }
 
-  // calculate game result 
-  let result;
+  const result = (Math.random() > 0.5 ? "heads" : "tails");
 
-  const isFlipResultHeads = Math.random() > 0.5;
-
-  if (isFlipResultHeads === true) {
-    result = "heads";
-  } else {
-    result = "tails";
-  }
-
-  // increment or decrement user balance by bet based on win/loss respectively
-  if (result === headsOrTails) {  
+  const updateUserBalance = async (amount) => {
     await prisma.userWallet.update({
       where: {
-        userId: user.id,
+        userId: userId,
       },
       data: {
-        balance: { increment: bet },
+        balance: { increment: amount },
       },
     });
+  };
 
-    user.wallet.balance = user.wallet.balance + bet;
+  if (result === headsOrTails) {
+    await updateUserBalance(bet);
   } else {
-    await prisma.userWallet.update({
-      where: {
-        userId: user.id,
-      },
-      data: {
-        balance: { decrement: bet },
-      },
-    });
-
-    user.wallet.balance = user.wallet.balance - bet;
+    await updateUserBalance((bet * -1))
   }
   
-  return new Response(JSON.stringify({result: result, newBalance: user.wallet.balance}));
+  return new Response(JSON.stringify({ result: result }));
 }

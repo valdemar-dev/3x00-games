@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
       if(!result.ok) return;
 
       const wallet = await result.json();
-  
+      
       setUserWallet(wallet?.balance);
   
       return;
