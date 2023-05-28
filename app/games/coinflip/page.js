@@ -4,23 +4,42 @@ import useSound from "use-sound";
 import styles from "./page.module.css";
 import { useEffect, useRef, useState } from "react";
 
-export default function Coinflip() {
+export default function Coinflip(props) {
   const [coinflip] = useSound("/coinflip.mp3");
 
+  const infoRef = useRef();
   const resultRef = useRef();
+
+  const [loadingDisplay, setLoadingDisplay] = useState("none");
+  const [areControlsDisabled, setAreControlsDisabled] = useState(false);
+  const [headsOrTails, setHeadsOrTails] = useState(null);
+
+  const showInfoBox = (text, duration) => {
+    infoRef.current.innerHTML = text;
+    infoRef.current.style.animation = "info_slide_in 0.5s ease-out forwards";
+
+    setTimeout(() => {
+      infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
+    }, ((duration * 1000) || 4000));
+  };
 
   const coinFlip = async (event) => {
     event.preventDefault();
 
-    coinflip();
-    resultRef.current.style.animation = `${styles.coinflip_loading} 0.3s linear forwards infinite`;
+    //prevents user from spamming spin
+    setAreControlsDisabled(true);
 
-    const bet = event.target[0].value || 0;
-    const headsOrTails = event.target[1].value || "heads";
+    const bet = event.target[2].value || 0;
 
+    // Confirm bet size.
     if (!bet || bet < 1) {
+      showInfoBox("You must provide a bet greater than $1.");
+      setAreControlsDisabled(false);
       return;
-      // INFORM THA THE BET IS BAD
+    } else if (bet > 15000) {
+      showInfoBox("The provided bet is too large!");
+      setAreControlsDisabled(false);
+      return;
     }
 
     const data = {
@@ -36,31 +55,61 @@ export default function Coinflip() {
       },
     };
 
+    setLoadingDisplay("block");
+
     const result = await fetch("/api/games/coinflip/", options);
 
+    if (!result.ok) {
+      showInfoBox("Uh oh! We've encountered an error.\nTry refreshing the page. If the issue persists, try again later.", 7);
+    }
     const resultJSON = await result.json();
+
+    setLoadingDisplay("none");
+
+    coinflip();
 
     if (resultJSON.result === "heads") {
       resultRef.current.style.animation = `${styles.coinflip_heads} 5s ease-out forwards`;
     } else {
       resultRef.current.style.animation = `${styles.coinflip_tails} 5s ease-out forwards`;
     }
+
+    setTimeout(() => {
+      resultRef.current.style.animation = `${styles.coinflip_idle} 2s ease-in-out forwards infinite`;
+      setAreControlsDisabled(false);
+    }, 8000);
   }
 
   return (
     <div className={styles.coinflip}>
-      <h1>Coinflip!</h1>
-      <div id={styles.coin} ref={resultRef}>H</div>
-      <form onSubmit={(event) => {coinFlip(event)}}>
-        <input type="number" placeholder="Bet" required min={1}/>
+      <form id={styles.coinflip_form} onSubmit={(event) => {coinFlip(event)}}>
+        <div id={styles.coin_call}>
+          <button 
+            className="button button_secondary" 
+            disabled={areControlsDisabled} 
+            type="submit"
+            onClick={() => {setHeadsOrTails("heads")}}
+          >
+            Heads?
+            </button>
 
-        <select required>
-          <option value="heads">Heads</option>
-          <option value="tails">Tails</option>
-        </select>
+          <div id={styles.coin} ref={resultRef}></div>    
+          <button 
+            className="button button_secondary" 
+            disabled={areControlsDisabled} 
+            type="submit"
+            onClick={() => {setHeadsOrTails("tails")}}
+          >
+            Tails?
+          </button>  
+        </div>
 
-        <button type="submit">Flip the coin!</button>
+        <input disabled={areControlsDisabled} type="number" placeholder="Enter your bet.." required/>
       </form>
+
+      <img style={{display: loadingDisplay}} className="loading_icon" src="/loading.svg"/>
+      <div ref={infoRef} className="info_box">
+      </div>
     </div>
   )
 }

@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function GamesLayout({ children }) {
+export default function GamesLayout({ pageProps, children }) {
+  console.log(pageProps);
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);

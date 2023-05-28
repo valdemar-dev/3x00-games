@@ -13,7 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const [ userWallet, setUserWallet ] = useState(null);
 
-  useEffect(() => {
+  children.pageProps = {cum: "test"};
+  console.log(children);
+
+  const getData = async () => {
     fetch("/api/user/getWallet").then(async (result) => {
       if(!result.ok) return;
 
@@ -25,6 +28,16 @@ export default function RootLayout({ children }) {
     });
   
     return;
+  };
+
+  useEffect(() => {
+    getData();
+
+    const interval = setInterval(() => {
+      getData().catch(() => {
+        clearInterval(interval)
+      });
+    }, 10000)
   }, []);
 
   const isPositiveInt = (num) => {
@@ -47,7 +60,7 @@ export default function RootLayout({ children }) {
             <Link href="/store">Store</Link>
             <span className='highlight_tag'>
               {isPositiveInt(userWallet) ? "+" : "-"}${userWallet?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              </span>
+            </span>
           </div>
         </nav>
         {children}

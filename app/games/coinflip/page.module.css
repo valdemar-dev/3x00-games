@@ -3,51 +3,67 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    margin-inline: clamp(5rem, 8vw, 10rem);
 }
 
 #coin {
     margin: 2rem;
-    background-color: var(--highlight-two);
 
     border-radius: 100%;
     aspect-ratio: 1/1;
     width: 8rem;
+    min-width: 5rem;
+
     position: relative;
     transform-style: preserve-3d;
     font-size: 1.5rem;
+
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--highlight-one);
-}
+    animation: coinflip_idle 2s ease-in-out forwards infinite;
 
-#coin:after {
     background-color: var(--secondary-lighter);
-    bottom: 0;
-    content: '';
-    left: calc(8rem / 2 - 5px);
-    position: absolute;
-    top: 0;
-    transform: rotateY(-90deg);
-    transform-origin: 100% 50%;
-    width: 5px;
-    z-index: -10;
+    background-image: url("/head.svg");
+    background-size: 60% 60%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+
+    backface-visibility: hidden;
+
+    outline: 3px solid white;
+
+    outline: 3px solid var(--highlight-one);
 }
 
 #coin:before {
-    background-color: var(--secondary-lighter);
-    border-radius: 100%;
-    content: 'T';
-    left: 0;
     position: absolute;
+    left: 0;
     top: 0;
-    transform: translateZ(-5px);
-    aspect-ratio: 1/1;
-    width: 8rem;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    content: "";
+
+    aspect-ratio: 1/1;
+    width: 8rem;
+    min-width: 5rem;
+
+    background-image: url("/tail.svg");
+    background-size: 70% 70%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+
+    background-color: var(--secondary-lighter);
+
+    border-radius: 100%;
+
+    transform: translateZ(-1px);
+
+    outline: 3px solid var(--accent);
 }
 
 @keyframes coinflip_heads {
@@ -70,7 +86,7 @@
     }
 }
 
-@keyframes coinflip_loading {
+@keyframes coinflip_idle {
     0% {
         transform: rotateY(0deg);
     }
@@ -78,4 +94,46 @@
     100% {
         transform: rotateY(360deg);
     }
+}
+
+#coinflip_form {
+    padding: 2rem;
+    background-color: var(--highlight-two);
+    border-radius: 15px;
+}
+
+#coin_call {
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (max-width: 900px) {
+    #coin_call {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+}
+
+#coinflip_form input {
+    width: calc(100% - 2rem);
+    padding-block: 0.7rem;
+    padding-inline: 1rem;
+    border-radius: 7px;
+    border: none;
+    font-size: 1.15rem;
+    font-family: var(--regular-font);
+    transition-duration: 0.2s;
+    background-color: var(--secondary-lighter);
+    color: var(--primary);
+    border-radius: 7px;
+    caret-color: var(--primary);
+/* 
+    opacity: 0;
+    animation: fade_in 0.4s ease-in-out 250ms forwards; */
+}
+
+
+#coinflip_form input:focus {
+    outline: 3px solid var(--highlight-one);
 }

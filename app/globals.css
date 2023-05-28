@@ -99,6 +99,8 @@ p {
   transition-timing-function: ease;
   transition-property: all;
   font-size: 1.15rem;
+
+  cursor:pointer;
 }
 
 .button_slim {
@@ -114,6 +116,8 @@ p {
   transition-timing-function: ease;
   transition-property: all;
   font-size: 1.15rem;
+
+  cursor:pointer;
 }
 
 .button_primary {
@@ -201,6 +205,82 @@ p {
   font-size: 1.15rem;
 }
 
+.loading_icon {
+  position: fixed;
+  z-index: 1000;
+  bottom: 1rem;
+  right: 1rem;
+
+  aspect-ratio: 1/1;
+  width: 2rem;
+
+  filter: invert(100%);
+
+  animation: loading_spin 1s ease-in-out infinite;
+}
+
+.info_box {
+  position: fixed;
+
+  z-index: 1000;
+
+  bottom: 2rem;
+
+  padding-block: 0.7rem;
+  padding-inline: 1rem;
+
+  border-bottom: 3px solid var(--accent);
+
+  max-width: 80%;
+
+  right: -100%;
+  
+  border-radius: 7px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+
+  background-color: var(--highlight-two);
+  color: var(--primary);
+}
+
+.info_box_header {
+  color: var(--highlight-one);
+}
+
+@keyframes info_slide_in {
+  0% {
+    opacity: 0%;
+    right: -100%;
+  }
+
+  100% {
+    opacity: 100%;
+    right: 2rem;
+  }
+}
+
+@keyframes info_slide_out {
+  0% {
+    opacity: 100%;
+    right: 2rem;
+  }
+
+  100% {
+    opacity: 0%;
+    right: -100%;
+  }
+}
+
+@keyframes loading_spin {
+  0% {
+    rotate: 0deg;
+  }
+
+  100% {
+    rotate: 360deg;
+  }
+}
+
 @keyframes fadeIn {
   0% {
       opacity: 0%;
@@ -209,4 +289,20 @@ p {
   100% { 
       opacity: 100%;
   }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input:disabled {
+  filter:brightness(30%);
 }
