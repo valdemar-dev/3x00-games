@@ -4,19 +4,10 @@ import Link from 'next/link'
 import './globals.css'
 import { useEffect, useState } from 'react';
 
-export const metadata = {
-  title: '3x00 Games',
-  description: 'All the games!',
-  content:"text/html; charset=utf-8"
-}
-
 export default function RootLayout({ children }) {
   const [ userWallet, setUserWallet ] = useState(null);
 
-  children.pageProps = {cum: "test"};
-  console.log(children);
-
-  const getData = async () => {
+  useEffect(() => {
     fetch("/api/user/getWallet").then(async (result) => {
       if(!result.ok) return;
 
@@ -26,25 +17,7 @@ export default function RootLayout({ children }) {
   
       return;
     });
-  
-    return;
-  };
-
-  useEffect(() => {
-    getData();
-
-    const interval = setInterval(() => {
-      getData().catch(() => {
-        clearInterval(interval)
-      });
-    }, 10000)
   }, []);
-
-  const isPositiveInt = (num) => {
-    if (num >= 0) return true;
-
-    return false;
-  }
 
   return (
     <html lang="en">
@@ -59,7 +32,7 @@ export default function RootLayout({ children }) {
             <Link href="/games">Games</Link>
             <Link href="/store">Store</Link>
             <span className='highlight_tag'>
-              {isPositiveInt(userWallet) ? "+" : "-"}${userWallet?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              ${userWallet?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </span>
           </div>
         </nav>

@@ -40,8 +40,6 @@ export async function POST(request) {
     userId: user.id,
   }));
 
-  //response.headers.set("Set-Cookie", `userId=${user.id}; Secure; Max-Age=${90 * 86400}; HttpOnly=False; SameSite=None; Path=/, sessionToken=${sessionToken}; Secure; Max-Age=${90 * 86400}; HttpOnly=False; SameSite=None; Path=/;, test=test;`);
-
   return response;
 }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import hashText from "@/utils/hashText";
 import { useRouter } from "next/navigation";
 import Cookies from "universal-cookie";
@@ -9,7 +9,18 @@ import Link from "next/link";
 
 export default function Login() {
   const router = useRouter();
-  const infoBox = useRef();
+  const infoRef = useRef();
+
+  const [loadingDisplay, setLoadingDisplay] = useState("none");
+
+  const showInfoBox = (text, duration) => {
+    infoRef.current.innerHTML = text;
+    infoRef.current.style.animation = "info_slide_in 0.5s ease-out forwards";
+
+    setTimeout(() => {
+      infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
+    }, ((duration * 1000) || 4000));
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -29,10 +40,13 @@ export default function Login() {
         body: JSON.stringify(data),
     };
 
+    setLoadingDisplay("block");
+
     const result = await fetch(endpoint, options);
    
     if(!result.ok) {
-      return infoBox.current.innerHTML = await result.text();
+      setLoadingDisplay("none");
+      return showInfoBox(await result.text());
     }
 
     const cookies = new Cookies();
@@ -43,12 +57,12 @@ export default function Login() {
     cookies.set("userId", resultJSON.userId, { secure: true, sameSite: "none", maxAge: 90 * 86400, httpOnly: false, path:"/" });
     cookies.set("username", event.target[0].value, { secure: true, sameSite: "none", maxAge: 90 * 86400, httpOnly: false, path:"/" });
 
+    setLoadingDisplay("none");
     return router.push("/");
   };
 
   return(
     <div className={styles.login}>
-      <div ref={infoBox}></div>
       <form onSubmit={(event) => {handleLogin(event)}}>
         <h2>Login</h2>
         <input type="text" placeholder="Enter your username" required/>
@@ -58,6 +72,9 @@ export default function Login() {
           <Link href="/register" className="unobstructive">Not a member?</Link>
         </div>
       </form>
+
+      <img style={{display: loadingDisplay}} className="loading_icon" src="/loading.svg"/>
+      <div ref={infoRef} className="info_box"></div>
     </div>
   )
 }
