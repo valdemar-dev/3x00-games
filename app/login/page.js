@@ -12,14 +12,15 @@ export default function Login() {
   const infoRef = useRef();
 
   const [loadingDisplay, setLoadingDisplay] = useState("none");
+  const [infoBoxTimeout, setInfoBoxTimeout] = useState(null);
 
   const showInfoBox = (text, duration) => {
     infoRef.current.innerHTML = text;
     infoRef.current.style.animation = "info_slide_in 0.5s ease-out forwards";
 
-    setTimeout(() => {
+    setInfoBoxTimeout(setTimeout(() => {
       infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
-    }, ((duration * 1000) || 4000));
+    }, ((duration * 1000) || 4000)));
   };
 
   const handleLogin = async (event) => {
@@ -57,7 +58,10 @@ export default function Login() {
     cookies.set("userId", resultJSON.userId, { secure: true, sameSite: "none", maxAge: 90 * 86400, httpOnly: false, path:"/" });
     cookies.set("username", event.target[0].value, { secure: true, sameSite: "none", maxAge: 90 * 86400, httpOnly: false, path:"/" });
 
+    clearTimeout(infoBoxTimeout);
+
     setLoadingDisplay("none");
+    router.refresh();
     return router.push("/");
   };
 
