@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
 
       const wallet = await result.json();
       
-      setUserWallet(wallet?.balance);
+      setUserWallet(wallet.balance > 0 ? `+$${wallet.balance}` : `${wallet.balance}`);
   
       return;
     });
@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
             <Link href="/games">Games</Link>
             <Link href="/store">Store</Link>
             <span className='highlight_tag'>
-              ${userWallet?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+	      {userWallet || "+$0"}
             </span>
           </div>
         </nav>

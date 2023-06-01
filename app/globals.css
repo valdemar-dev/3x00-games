@@ -136,6 +136,7 @@ p {
 }
 
 .button_secondary:hover {
+  transform: translateY(-5px);
   color: var(--highlight-one);
 }
 
@@ -305,4 +306,12 @@ input[type=number] {
 
 input:disabled {
   filter:brightness(30%);
+}
+
+.exit_button {
+  display: flex;
+  margin-top: 3px;
+  align-items: center;
+
+  filter: invert(70%);
 }

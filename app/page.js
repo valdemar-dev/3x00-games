@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -19,40 +20,40 @@ export default function Home() {
           <div className={styles.card}>
             <span className={`${styles.card_tl} ${styles.card_indicator}`}>
               7 
-              <img
-                src={`/hearts.svg`} alt="card house" height="25px"/>
+              <Image
+                src={`/hearts.svg`} alt="card house" height="25" width="25" />
             </span>
 
             <span className={styles.card_center}>7</span>
 
-            <img
+            <Image
               className={styles.card_center_image}
-              src={`/hearts.svg`} alt="card house" height="180px"/>
+              src={`/hearts.svg`} alt="card house" width="180" height="180"/>
 
             <span className={`${styles.card_br} ${styles.card_indicator}`}>
               7
-              <img
-                src={`/hearts.svg`} alt="card house" height="25px"/>
+              <Image
+                src={`/hearts.svg`} alt="card house" width="25" height="25"/>
             </span>
           </div>
 
           <div className={styles.card}>
             <span className={`${styles.card_tl} ${styles.card_indicator}`}>
               3 
-              <img
-                src={`/clubs.svg`} alt="card house" height="25px"/>
+              <Image
+                src={`/clubs.svg`} alt="card house" width="25" height="25"/>
             </span>
 
             <span className={styles.card_center}>3</span>
 
-            <img
+            <Image
               className={styles.card_center_image}
-              src={`/clubs.svg`} alt="card house" height="180px"/>
+              src={`/clubs.svg`} alt="card house" width="180" height="180"/>
 
             <span className={`${styles.card_br} ${styles.card_indicator}`}>
               3 
-              <img
-                src={`/clubs.svg`} alt="card house" height="25px"/>
+              <Image
+                src={`/clubs.svg`} alt="card clubs" width="25" height="25"/>
             </span>
           </div>
         </div>

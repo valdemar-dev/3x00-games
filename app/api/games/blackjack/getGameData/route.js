@@ -15,7 +15,7 @@ export async function GET(req) {
   const game = bjGameManager.getGameFromUserId(userId); 
 
   if (!game) return new Response("User is not in a game.", {
-    status: 403,
+    status: 400,
   });
 
   if (game.isCurrentTurnPlayer === false) {

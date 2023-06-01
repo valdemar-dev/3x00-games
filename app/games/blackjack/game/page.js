@@ -1,10 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Cookies from "universal-cookie";
 import styles from "./page.module.css";
 import useSound from "use-sound"; 
+import Image from "next/image";
 
 export default function BlackjackApp() {
   const [ gameData, setGameData ] = useState(null);
@@ -13,6 +14,19 @@ export default function BlackjackApp() {
   const [ isGESoundPlayed, setIsGESoundPlayed ] = useState(false);
 
   const router = useRouter();
+
+  const infoRef = useRef();
+  const [loadingDisplay, setLoadingDisplay] = useState("none");
+
+  const showInfoBox = (text, duration) => {
+    infoRef.current.innerHTML = text;
+    infoRef.current.style.animation = "info_slide_in 0.5s ease-out forwards";
+
+    setTimeout(() => {
+      infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
+    }, ((duration * 1000) || 4000));
+  };
+
 
   // sound effects
   const [cardFlip] = useSound("/card-flip.wav");
@@ -25,8 +39,7 @@ export default function BlackjackApp() {
     fetch("/api/games/blackjack/getGameData")
       .then(async (res) => {
         if(!res.ok || !res) {
-          router.push("/games/blackjack");
-          return;
+          throw new Error("Forbidden!") 
         }
 
         const resJSON = await res.json();
@@ -34,8 +47,7 @@ export default function BlackjackApp() {
         setGameData(resJSON.gameData);
         setLoading(false); 
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         return;
       })
   };
@@ -44,7 +56,10 @@ export default function BlackjackApp() {
     getData();
 
     const dataInterval = setInterval(async () => {
-      await getData();
+      await getData().catch(() => {
+        clearInterval(dataInterval); 
+      });
+
       return;
     }, 1000)
 
@@ -86,7 +101,7 @@ export default function BlackjackApp() {
 
           <img
             className={styles.card_center_image}
-            src={`/${card.house}.svg`} alt="card house" height="140px"/>
+            src={`/${card.house}.svg`} alt="card house" height="180px"/>
 
           <span className={`${styles.card_br} ${styles.card_indicator}`}>
             {card.face} 
@@ -99,26 +114,38 @@ export default function BlackjackApp() {
   };
 
   const drawCard = async () => {
-    await fetch("/api/games/blackjack/drawCard");
-    cardFlip();
-    
-    return;
+    setLoadingDisplay("block");
+
+    await fetch("/api/games/blackjack/drawCard").then((result) => {
+      setLoadingDisplay("none");
+
+      if (!result.ok) {  
+        return showInfoBox("You can't do that right now!");
+      }
+
+      return cardFlip();
+    });
   };
 
   const stand = async () => {
-    await fetch("/api/games/blackjack/stand");
-    click();
-    
-    return;
+    setLoadingDisplay("block");
+
+    await fetch("/api/games/blackjack/stand").then((result) => {
+      setLoadingDisplay("none");
+
+      if (!result.ok) {
+        return showInfoBox("You can't do that right now!")
+      }
+
+      return click();
+    });
   };
 
   const leaveGame = async () => {
     router.push("/games/blackjack");
     router.refresh();
 
-    await fetch("/api/games/blackjack/leaveGame");
-
-    return alert("You are leaving the game!");
+    return await fetch("/api/games/blackjack/leaveGame");
   };
 
   if (loading) {
@@ -132,37 +159,51 @@ export default function BlackjackApp() {
       <div id={styles.player}>
         <p
           className={styles.player_name}>
-        {gameData.isCurrentTurnPlayer ? <span>{gameData.player.username} </span> : <span><s>{gameData.player.username}</s> </span>}
+          {gameData.player.username} [{gameData.player.cardTotal}]
+
+          <a
+            className="exit_button"
+            onClick={() => {leaveGame()}}
+          >
+            <Image
+              src={"/exit.svg"}
+              alt="exit icon"
+              height="20"
+              width="20"
+            />
+          </a>
+
         </p>
 
         <div className={styles.card_container}>
           {mapCards(gameData.player.cards)}
+
+
         </div>
 
-        <p className={styles.card_total}>{gameData.player.cardTotal}</p>
+        <div id={styles.control_buttons}>
+          <button
+            onClick={async () => {await drawCard()}}
+            className={`${styles.control_button} button button_secondary`}>
+            Draw 
+          </button>
+          <button
+            onClick={async () => {await stand()}}
+            className={`${styles.control_button} button button_secondary`}>
+            Stand
+          </button>
+        </div>
       </div>
 
       <div id={styles.dealer}>
-        <p className={styles.player_name}>Dealer</p>
+        <p className={styles.player_name}>Dealer [{gameData.dealerTotal}]</p>
         <div className={styles.card_container}>
           {mapCards(gameData.dealerCards)}
         </div>
-        <p className={styles.card_total}>{gameData.dealerTotal}</p>
       </div>
 
-      <div id={styles.game_tools}>
-        <div id={styles.game_tools_inner}>
-          <button 
-            onClick={async () => {await drawCard()}}
-          >Hit</button>
-
-          <button
-            onClick={async () => {await stand()}}
-          >Stand</button>
-
-          <button onClick={async () => {await leaveGame()}}>leave</button>
-        </div>
-      </div>
+      <img style={{display: loadingDisplay}} className="loading_icon" src="/loading.svg"/>
+      <div ref={infoRef} className="info_box"></div>
     </div>
   )
 }

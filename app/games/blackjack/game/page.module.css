@@ -1,7 +1,7 @@
 .blackjack {
   display: flex;
   margin-inline: clamp(5rem, 8vw, 10rem);
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 #dealer {
@@ -26,76 +26,12 @@
 }
 
 .player_name {
-  font-size: 1.3rem;
-}
-
-#game_tools {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-#game_tools_inner {
   display: flex;
-  gap: 2rem;
-  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  color: var(--primary);
 }
 
-#card_image {
-  aspect-ratio: 1/0.7;
-
-  width: 35%;
-  max-width: 50rem;
-
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  background: radial-gradient(circle, var(--highlight-two) 8%, transparent 51%);
-
-  background-clip: none; 
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-
-  animation-duration: 10s;
-  animation-name: card_image_animation;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode:forwards;
-  animation-iteration-count: infinite;
-}
-
-@keyframes card_image_animation {
-  0% {    
-      background-size: 100%;
-  }
-
-  50% {
-      background-size: 150%;
-  }
-
-  100% {
-      background-size: 100%;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .home {
-      flex-direction: column-reverse;
-      justify-content: flex-start;
-      align-items: center;
-  }
-
-  #hero_text {
-      width: 90%;
-  }
-
-  #card_image {
-      width: 90%;
-  }
-}
 
 .card {
   display: flex;
@@ -110,7 +46,7 @@
   aspect-ratio: 9 / 13;
 
   min-width: 3rem;
-  width: clamp(4rem, 9vw, 8rem);
+  width: clamp(7rem, 13vw, 7rem);
 
   border-radius: 10px;
 
@@ -122,10 +58,29 @@
 
   overflow: hidden;
 
-  transition-duration: .08s;
-  transition-timing-function: ease-out;
+	background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  transition-duration: .1s;
+  transition-timing-function: ease-in-out;
 
   box-sizing: border-box;
+}
+
+@keyframes card_image_animation {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.card:hover {
+  transform: translateY(-1rem);
 }
 
 .card_indicator {
@@ -175,3 +130,11 @@
       opacity: 100%;
   }
 }
+
+#control_buttons {
+  margin-top: 1.5rem;
+
+  display: flex;
+  gap: 1rem;
+}
+
