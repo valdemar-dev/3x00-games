@@ -54,9 +54,10 @@ class GameDeck {
 }
 
 class Game {
-  constructor (playerId, playerUsername, playerBet) {
+  constructor (playerId, playerUsername, playerBet, creationDate) {
     this.gameId = crypto.randomUUID();
 
+    this.mgCreationDate = creationDate
     //create game deck
     this.deck = new GameDeck();
 
@@ -169,6 +170,7 @@ class Game {
 
 class BJGameManager {
   constructor () {
+    this.creationDate = date.now();
     this.games = [];
   }
   
@@ -178,7 +180,7 @@ class BJGameManager {
     const userInGame = this.games.find(game => game.player.id === userId);
 
     if(!userInGame) {
-      this.games.push(new Game(userId, username, bet));
+      this.games.push(new Game(userId, username, bet, this.creationDate));
 
       return `all good homie ${this.games}`;
     }
