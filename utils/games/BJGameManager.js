@@ -183,7 +183,7 @@ class BJGameManager {
       return `all good homie ${this.games}`;
     }
 
-    else return "I HATE YOU2";
+    else return "I HATE YOU";
   }
 
   deleteGame(gameId) {
@@ -215,6 +215,10 @@ class BJGameManager {
 
 let bjGameManager;
 
-bjGameManager = new BJGameManager();
+if(!global.bjGameManager) {
+  global.bjGameManager = new BJGameManager();
+}
+
+bjGameManager = global.bjGameManager;
 
 export default bjGameManager;
