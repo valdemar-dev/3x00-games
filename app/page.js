@@ -58,8 +58,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    
-      <span style={{position:"absolute", left: "1rem", bottom: "1rem", opacity:"20%"}}>Made with Next 13, hosted on Vercel.</span>
     </div>
   )
 }

@@ -3,20 +3,22 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-inline: clamp(5rem, 8vw, 10rem);
-  gap: 1rem;
+    margin-inline: 1rem;
 }
 
 .blackjack_form {
-  width: fit-content;
   padding: 2rem;
   background-color: var(--highlight-two);
   border-radius: 15px;
 }
 
+.blackjack_form #form_inputs {
+  display: flex;  
+  gap: 1rem;
+}
+
 .blackjack_form input {
-    width: calc(80% - 3rem);
-    margin-right: 1rem;
+    width: 80%;
     padding-block: 0.7rem;
     padding-inline: 1rem;
     border-radius: 7px;
@@ -28,13 +30,28 @@
     color: var(--primary);
     border-radius: 7px;
     caret-color: var(--primary);
-/* 
-    opacity: 0;
-    animation: fade_in 0.4s ease-in-out 250ms forwards; */
 }
 
 .blackjack_form input:focus {
     outline: 3px solid var(--highlight-one);
+}
+
+.blakcjack_form button {
+  width: 20%;
+}
+
+@media screen and (max-width: 500px) {
+  .blackjack_form input {
+    width: calc(100% - 2rem);
+  }
+
+  .blackjack_form button {
+    width: 100%;
+  }
+
+  #form_inputs {
+    flex-direction: column;
+  }
 }
 
 #form_header {

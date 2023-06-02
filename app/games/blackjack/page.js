@@ -32,7 +32,6 @@ export default function Blackjack() {
 
     setLoadingDisplay("block");
 
-    // TODO: parse multiple ids
     const bet = event.target[0].value;
 
     const data = {
@@ -62,14 +61,16 @@ export default function Blackjack() {
     <div className={styles.blackjack}>
       <form className={styles.blackjack_form} onSubmit={(event) => {createGame(event)}}>
         <div id={styles.form_header}>
-          <h1>Blackjack</h1>
+          <h2>Blackjack</h2>
         </div>
 
-        <input name="bet" type="number" max={20000} required placeholder="Enter your bet..."/>
+        <div id={styles.form_inputs}>
+          <input name="bet" type="number" max={20000} required placeholder="Bet"/>
 
-        <button
-          className="button button_primary"
-          type="submit">Play</button>
+          <button
+            className="button button_primary"
+            type="submit">Play</button>
+        </div>
 
         <div id={styles.form_footer} className="unobstructive">Note: 5 card charlie is on.</div>
       </form>

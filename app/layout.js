@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import './globals.css'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function RootLayout({ children }) {
   const [ userWallet, setUserWallet ] = useState(null);
@@ -27,13 +27,13 @@ export default function RootLayout({ children }) {
             <Link className='link_secondary' href="/">3x00-Games</Link>
           </div>
 
-          <div className="nav_hide">
-            <a className='link_secondary'></a>
+          <div 
+            className="nav_hide">
             <Link href="/games">Games</Link>
-            <Link href="/store">Store</Link>
             <span className='highlight_tag'>
-	      {userWallet || "+$0"}
+              {userWallet || "+$0"}
             </span>
+            <Link href="/store">Store</Link>
           </div>
         </nav>
         {children}
