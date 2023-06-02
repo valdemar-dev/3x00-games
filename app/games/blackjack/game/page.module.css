@@ -4,6 +4,12 @@
   justify-content: space-around;
 }
 
+@media screen and (max-width: 900px) {
+  .blackjack {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
 #dealer {
   display: flex;
   flex-direction: column;
