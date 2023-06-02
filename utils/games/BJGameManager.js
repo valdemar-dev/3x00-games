@@ -170,7 +170,7 @@ class Game {
 
 class BJGameManager {
   constructor () {
-    this.creationDate = date.now();
+    this.creationDate = new Date();
     this.games = [];
   }
   
