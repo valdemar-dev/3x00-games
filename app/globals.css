@@ -247,8 +247,13 @@ input:disabled {
 
   .nav_hide {
     width: 100%;
-    gap: 2rem;
+    gap: 1rem;
     justify-content: center;
+  }
+  
+  .nav_hide span {
+    max-width: 40%;
+    text-overflow: ellipsis;
   }
 
   .nav_logo {
