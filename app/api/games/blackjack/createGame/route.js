@@ -32,7 +32,7 @@ export async function POST(req) {
     });
   }
 
-  bjGameManager.createGame(userId, username, bet);
+  console.log(bjGameManager.createGame(userId, username, bet));
 
   return new Response("OK.")
 }
