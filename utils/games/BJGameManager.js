@@ -182,7 +182,7 @@ class BJGameManager {
     if(!userInGame) {
       this.games.push(new Game(userId, username, bet, this.creationDate));
 
-      return `all good homie ${this.games}`;
+      return `all good homie ${this.creationDate}`;
     }
 
     else return "I HATE YOU";
