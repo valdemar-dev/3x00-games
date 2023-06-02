@@ -22,6 +22,7 @@ class GameDeck {
           value = 10;
           face = "K";
         } else if (value === 1) {
+          value = 11;
           face = "A";
         }
 
@@ -67,7 +68,7 @@ class Game {
     this.player = {
       id: playerId,
       username: playerUsername,
-      bet: playerBet,
+      bet: playerBet || 0,
       cards: [
         this.deck.drawCard(),
         this.deck.drawCard(),
@@ -77,8 +78,15 @@ class Game {
         let total = 0;
 
         this.cards.forEach((card) => {
-          total += card.value;
+          total += card.value; 
         });
+
+        // aces default to 1 if they would make the total go over 21
+        if (total > 21) {
+          this.cards.forEach((card) => {
+            if (card.face === "A") total -= 10;
+          })
+        }
 
         return total;
       },
@@ -93,8 +101,15 @@ class Game {
         let total = 0;
 
         this.cards.forEach((card) => {
-          total += card.value;
+          total += card.value; 
         });
+
+        // aces default to 1 if they would make the total go over 21
+        if (total > 21) {
+          this.cards.forEach((card) => {
+            if (card.face === "A") total -= 10;
+          })
+        }
 
         return total;
       },
@@ -158,7 +173,7 @@ class BJGameManager {
   }
   
   createGame(userId, username, bet) {
-    if (!userId || !username || !bet) return;
+    if (!userId || !username || bet < 0) return;
 
     this.games.push(new Game(userId, username, bet));
   }

@@ -17,22 +17,28 @@ export default function BlackjackApp() {
 
   const infoRef = useRef();
   const [loadingDisplay, setLoadingDisplay] = useState("none");
+  const [areControlsDisabled, setAreControlsDisabled] = useState(false);
 
   const showInfoBox = (text, duration) => {
     infoRef.current.innerHTML = text;
     infoRef.current.style.animation = "info_slide_in 0.5s ease-out forwards";
 
     setTimeout(() => {
-      infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
+      //try catch because the user can navigate outside of the page
+      //before the timeout has time to complete
+      try {
+        infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
+      } catch {
+        return;
+      }
     }, ((duration * 1000) || 4000));
   };
 
-
   // sound effects
-  const [cardFlip] = useSound("/card-flip.wav");
-  const [win] = useSound("/win.wav");
-  const [loss] = useSound("/loss.wav");
-  const [click] = useSound("/click.mp3");
+  const [cardFlip] = useSound("/card-flip.wav", { volume: 0.40 });
+  const [win] = useSound("/win.wav", { volume: 0.30 });
+  const [loss] = useSound("/loss.wav", { volume: 0.30 });
+  const [click] = useSound("/click.mp3", { volume: 0.40 });
   const [click2] = useSound("/click2.wav", { volume: 0.30 });
 
   const getData = async () => {
@@ -51,7 +57,7 @@ export default function BlackjackApp() {
         return;
       })
   };
-  
+
   useEffect(() => {
     getData();
 
@@ -61,7 +67,7 @@ export default function BlackjackApp() {
       });
 
       return;
-    }, 1000)
+    }, 1200)
 
     // clears interval when component unloads
     return () => clearInterval(dataInterval);
@@ -70,14 +76,29 @@ export default function BlackjackApp() {
   useEffect(() => {
     if (!gameData) return;
     
+    // plays sound that indicates that the dealer is drawing a card
+    if (gameData?.isCurrentTurnPlayer === false && gameData?.isGameOver === false) {
+      cardFlip();
+    }
+
     if (isGESoundPlayed == false && gameData?.isGameOver === true) {
+      console.log(gameData);
       if (gameData?.playerWin === true) {
         win();
+
         setIsGESoundPlayed(true);
+
+        showInfoBox("You win!", 30);
+
       } else {
         loss();
+
         setIsGESoundPlayed(true);
+
+        showInfoBox("You lose!", 30);
       };
+
+      setAreControlsDisabled(true);
     }
 
     return;
@@ -93,20 +114,20 @@ export default function BlackjackApp() {
         >
           <span className={`${styles.card_tl} ${styles.card_indicator}`}>
             {card.face} 
-            <img
-              src={`/${card.house}.svg`} alt="card house" height="20px"/>
+            <Image
+              src={`/${card.house}.svg`} alt="card house" height="20" width="20"/>
           </span>
 
           <span className={styles.card_center}>{card.face}</span>
 
-          <img
+          <Image
             className={styles.card_center_image}
-            src={`/${card.house}.svg`} alt="card house" height="180px"/>
+            src={`/${card.house}.svg`} alt="card house" height="180" width="180"/>
 
           <span className={`${styles.card_br} ${styles.card_indicator}`}>
             {card.face} 
-            <img
-              src={`/${card.house}.svg`} alt="card house" height="20px"/>
+            <Image
+              src={`/${card.house}.svg`} alt="card house" height="20" width="20"/>
           </span>
         </div>
       )
@@ -160,37 +181,29 @@ export default function BlackjackApp() {
         <p
           className={styles.player_name}>
           {gameData.player.username} [{gameData.player.cardTotal}]
-
-          <a
-            className="exit_button"
-            onClick={() => {leaveGame()}}
-          >
-            <Image
-              src={"/exit.svg"}
-              alt="exit icon"
-              height="20"
-              width="20"
-            />
-          </a>
-
         </p>
 
         <div className={styles.card_container}>
           {mapCards(gameData.player.cards)}
-
-
         </div>
 
         <div id={styles.control_buttons}>
           <button
+            disabled={areControlsDisabled}
             onClick={async () => {await drawCard()}}
             className={`${styles.control_button} button button_secondary`}>
-            Draw 
+            Hit 
           </button>
           <button
+            disabled={areControlsDisabled}
             onClick={async () => {await stand()}}
             className={`${styles.control_button} button button_secondary`}>
             Stand
+          </button>
+          <button
+            className="button button_secondary"
+            onClick={() => {leaveGame()}}>
+            Quit 
           </button>
         </div>
       </div>
@@ -202,7 +215,7 @@ export default function BlackjackApp() {
         </div>
       </div>
 
-      <img style={{display: loadingDisplay}} className="loading_icon" src="/loading.svg"/>
+      <Image style={{display: loadingDisplay}} width="50" height="50" className="loading_icon" src="/loading.svg"/>
       <div ref={infoRef} className="info_box"></div>
     </div>
   )

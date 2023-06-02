@@ -1,12 +1,36 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
+import Link from "next/link";
+import { useRef, useState } from "react";
+import Image from "next/image";
 
 export default function Blackjack() {
   const router = useRouter();
 
+  const infoRef = useRef();
+  const [loadingDisplay, setLoadingDisplay] = useState("none");
+
+  const showInfoBox = (text, duration) => {
+    infoRef.current.innerHTML = text;
+    infoRef.current.style.animation = "info_slide_in 0.5s ease-out forwards";
+
+    setTimeout(() => {
+      //try catch because the user can navigate outside of the page
+      //before the timeout has time to complete
+      try {
+        infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
+      } catch {
+        return;
+      }
+    }, ((duration * 1000) || 4000));
+  };
+
   const createGame = async (event) => {
     event.preventDefault();
+
+    setLoadingDisplay("block");
 
     // TODO: parse multiple ids
     const bet = event.target[0].value;
@@ -23,21 +47,35 @@ export default function Blackjack() {
       body: JSON.stringify(data),
     };
 
-    await fetch("/api/games/blackjack/createGame", options);
-  
-    router.push("/games/blackjack/game");
+    const response = await fetch("/api/games/blackjack/createGame", options);
+
+    setLoadingDisplay("none");
+
+    if(!response.ok) {
+      showInfoBox(await response.text(), 3);
+    } else {
+      router.push("/games/blackjack/game");
+    }
   };
 
   return (
-    <div>
-      <h1>Blackjack!</h1>
-      <form onSubmit={(event) => {createGame(event)}}>
-        <label htmlFor="bet">Enter bet: (cannot be larger than balance or less than 0)</label><br/>
-        <input name="bet" type="number" required/><br/>
+    <div className={styles.blackjack}>
+      <form className={styles.blackjack_form} onSubmit={(event) => {createGame(event)}}>
+        <div id={styles.form_header}>
+          <h1>Blackjack</h1>
+        </div>
 
-        <button type="submit">Create game</button>
+        <input name="bet" type="number" max={20000} required placeholder="Enter your bet..."/>
+
+        <button
+          className="button button_primary"
+          type="submit">Play</button>
+
+        <div id={styles.form_footer} className="unobstructive">Note: 5 card charlie is on.</div>
       </form>
 
+      <Image style={{display: loadingDisplay}} width="50" height="50" className="loading_icon" src="/loading.svg"/>
+      <div ref={infoRef} className="info_box"></div>
     </div>
   )
 }

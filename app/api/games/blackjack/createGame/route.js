@@ -16,7 +16,7 @@ export async function POST(req) {
 
   // make sure that the player is not a part of 2 games at once
   if (bjGameManager.isPlayerInGame(userId) === true) {
-    return new Response("Player is already in a game.", {
+    return new Response("You are already in a game!", {
       status: 401,
     });
   }
@@ -25,6 +25,12 @@ export async function POST(req) {
 
   // default to 0 incase users want to have a casual game
   const bet = parseInt(reqJSON.bet) || 0;
+
+  if (bet > 20000 || isNaN(bet)) {
+    return new Response("Incorrect betting information!", {
+      status: 400,
+    });
+  }
 
   bjGameManager.createGame(userId, username, bet);
 

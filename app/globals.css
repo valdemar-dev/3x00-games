@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Source+Sans+Pro&display=swap');
 
+
+/* !!!!!!!!!!!! */
+/* ROOT STYLING */
+/* !!!!!!!!!!!! */
+
+
 :root {
   --primary: #f6f6f6;
   --primary-darker: #d9d9d9;
@@ -24,6 +30,7 @@
   background: var(--accent);
 }
 
+/* HTML AND BODY */
 html,body {
   font-size: 1.15rem;
 
@@ -40,7 +47,8 @@ body {
   margin-block: clamp(5rem, 8vw, 10rem);
 }
 
-a {
+/* LINKS */
+a,.link {
   width: fit-content;
   color: var(--primary);
   text-decoration: none;
@@ -54,37 +62,73 @@ a {
   cursor: pointer;
 }
 
-a:hover {
+a:hover,.link:hover {
   transform: translateY(-5px); 
 }
 
+/* HEADINGS */
 h1 {
   font-size: 2.5rem;
-}sda
+}
 
 h1,h2,h3,h4,h5,h6 {
   margin: 0px;
   font-family: var(--regular-font);
 }
 
+/* PARAGRAPHS */
 p {
   color: var(--primary-darker);
 }
 
-.link_primary {
-  color: var(--highlight-one);
+/* INPUTS */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.link_primary:hover {
-  color: var(--primary);
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* INPUT STATUS EFFECTS */
+input:disabled {
+  filter:brightness(30%);
+}
+
+
+/* !!!!!!!!!!!!!! */
+/* CUSTOM STYLING */
+/* !!!!!!!!!!!!!! */
+
+
+/* CUSTOM LINKS*/
+/*LINK TYPES*/
+.link_primary {
+  color: var(--highlight-one);
 }
 
 .link_secondary {
   color: var(--primary);
 }
 
+/* LINK STATUS EFFECTS */
+.link_primary:hover {
+  color: var(--primary);
+}
+
 .link_secondary:hover {
   color: var(--primary-darker);
+}
+
+/* CUSTOM BUTTONS */
+/* BUTTON TYPES*/
+.button_group {
+  display: flex;
+
+  gap: 1rem;
 }
 
 .button {
@@ -120,9 +164,19 @@ p {
   cursor:pointer;
 }
 
+/* BUTTON STYLES */
 .button_primary {
   background-color: var(--highlight-one);
   color: var(--secondary);
+}
+.button_secondary {
+  background-color: var(--highlight-two);
+  color: var(--primary);
+}
+
+/* BUTTON STATUS EFFECTS */
+.button:disabled {
+  opacity: 30%;
 }
 
 .button_primary:hover {
@@ -130,22 +184,18 @@ p {
   box-shadow: 0 5px 70px 0px var(--highlight-one);
 }
 
-.button_secondary {
-  background-color: var(--highlight-two);
-  color: var(--primary);
-}
-
 .button_secondary:hover {
   transform: translateY(-5px);
   color: var(--highlight-one);
 }
 
-.button_group {
-  display: flex;
 
-  gap: 1rem;
-}
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* NON-COMPONENT CUSTOM STYLING */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 
+
+/* NAVIGATION */
 .nav {
   margin-inline: clamp(5rem, 8vw, 10rem);
 
@@ -184,6 +234,12 @@ p {
   gap: 3rem;
 }
 
+
+/* !!!!!!!!!!!!!!!!!!!!! */
+/* USEFUL CUSTOM STYLING */
+/* !!!!!!!!!!!!!!!!!!!!! */
+
+
 .unobstructive {
   filter: opacity(30%);
 }
@@ -220,6 +276,7 @@ p {
   animation: loading_spin 1s ease-in-out infinite;
 }
 
+/* INFO BOX */
 .info_box {
   position: fixed;
 
@@ -247,6 +304,20 @@ p {
 .info_box_header {
   color: var(--highlight-one);
 }
+
+.exit_button {
+  display: flex;
+  margin-top: 3px;
+  align-items: center;
+
+  filter: invert(70%);
+}
+
+
+/* !!!!!!!!!!!!!!!!! */
+/* ANIMATION STYLING */
+/* !!!!!!!!!!!!!!!!! */
+
 
 @keyframes info_slide_in {
   0% {
@@ -292,26 +363,4 @@ p {
   }
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-input:disabled {
-  filter:brightness(30%);
-}
-
-.exit_button {
-  display: flex;
-  margin-top: 3px;
-  align-items: center;
-
-  filter: invert(70%);
-}

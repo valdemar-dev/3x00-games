@@ -32,6 +32,7 @@ export async function GET(req) {
     dealerTotal: game.dealer.cardTotal,
     isCurrentTurnPlayer: game.isCurrentTurnPlayer,
     isGameOver: game.isGameOver,
+    playerWin: game.playerWin,
   };
 
   return new Response(JSON.stringify({gameData: gameData}));
