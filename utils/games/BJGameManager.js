@@ -207,10 +207,6 @@ class BJGameManager {
 
 let bjGameManager;
 
-if(!global.bjGameManager) {
-  global.bjGameManager = new BJGameManager();
-}
-
-bjGameManager = global.bjGameManager;
+bjGameManager = new BJGameManager();
 
 export default bjGameManager;
