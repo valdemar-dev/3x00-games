@@ -175,12 +175,15 @@ class BJGameManager {
   createGame(userId, username, bet) {
     if (!userId || !username || bet < 0) return;
 
-    if(this.games.find(user => user.id === userId) !== null) {
-      return `I HATE YOU ${this.games}`; 
-    }
-    this.games.push(new Game(userId, username, bet));
+    const userInGame = this.games.find(game => game.player.id === userId);
 
-    return `all good homie ${this.games}`;
+    if(!userInGame) {
+      this.games.push(new Game(userId, username, bet));
+
+      return `all good homie ${this.games}`;
+    }
+
+    else return "I HATE YOU2";
   }
 
   deleteGame(gameId) {
