@@ -21,13 +21,8 @@ export async function GET(req) {
 
   // remove bet if they left whilst the game was still going on
   if (game.isGameOver === false) {
-    await prisma.userWallet.update({
-      where: {
-        userId: userId,
-      },
-      data: {
-        balance: { decrement: parseInt(game.player.bet) },
-      },
+    return new Response("The game is still on!", {
+      status: 403,
     });
   }
 
