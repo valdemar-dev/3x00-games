@@ -62,11 +62,13 @@ a,.link {
   cursor: pointer;
 }
 
-a:active,.link:active {
-  transform: translateY(-5px); 
+@media (pointer: coarse) {
+  a:active,.link:active {
+    transform: translateY(-5px); 
+  }
 }
 
-@media (hover:hover) {
+@media (hover:hover) and (pointer:fine) {
   a:hover,.link:hover {
     transform: translateY(-5px); 
   }
@@ -121,6 +123,7 @@ input:disabled {
 }
 
 /* LINK STATUS EFFECTS */
+@media (pointer: coarse) {
   .link_primary:active {
     color: var(--primary);
   }
@@ -128,9 +131,9 @@ input:disabled {
   .link_secondary:active {
     color: var(--primary-darker);
   }
+}
 
-
-@media (hover: hover) {
+@media (hover: hover) and (pointer:fine) {
   .link_primary:hover {
     color: var(--primary);
   }
