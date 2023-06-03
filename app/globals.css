@@ -130,7 +130,7 @@ input:disabled {
   }
 
 
-@media (hover: hover) and (point: fine) {
+@media (hover: hover) {
   .link_primary:hover {
     color: var(--primary);
   }
@@ -206,7 +206,7 @@ input:disabled {
     color: var(--highlight-one);
   }
 
-@media (hover: hover) and (point: fine) {
+@media (hover: hover) {
   .button_primary:hover {
     color: var(--primary);
     box-shadow: 0 5px 70px 0px var(--highlight-one);
