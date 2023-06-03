@@ -364,6 +364,15 @@ input:disabled {
   color: var(--primary);
 }
 
+@media screen and (max-width: 700px) {
+  .info_box {
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    text-align: center;
+  }
+}
+
 .info_box_header {
   color: var(--highlight-one);
 }
