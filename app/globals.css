@@ -66,7 +66,7 @@ a:active,.link:active {
   transform: translateY(-5px); 
 }
 
-@media screen and (hover: hover) {
+@media (hover:hover) {
   a:hover,.link:hover {
     transform: translateY(-5px); 
   }
