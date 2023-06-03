@@ -195,29 +195,15 @@ input:disabled {
   opacity: 30%;
 }
 
-.button_primary:active {
+.button_primary:hover, .button_primary:active {
   color: var(--primary);
   box-shadow: 0 5px 70px 0px var(--highlight-one);
 }
 
-.button_secondary:active {
+.button_secondary:hover, .button_secondary:active {
   transform: translateY(-5px);
   color: var(--highlight-one);
 }
-
-@media screen and (hover: hover) {
-  .button_primary:hover {
-    color: var(--primary);
-    box-shadow: 0 5px 70px 0px var(--highlight-one);
-  }
-
-  .button_secondary:hover
-    {
-    transform: translateY(-5px);
-    color: var(--highlight-one);
-  }
-}
-
 
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 /* NON-COMPONENT CUSTOM STYLING */
