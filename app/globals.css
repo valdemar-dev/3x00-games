@@ -62,7 +62,7 @@ a,.link {
   cursor: pointer;
 }
 
-a:hover,.link:hover {
+a:active,.link:active {
   transform: translateY(-5px); 
 }
 
@@ -179,12 +179,12 @@ input:disabled {
   opacity: 30%;
 }
 
-.button_primary:hover {
+.button_primary:hover,.button_primary:active {
   color: var(--primary);
   box-shadow: 0 5px 70px 0px var(--highlight-one);
 }
 
-.button_secondary:hover {
+.button_secondary:hover,.button_primary:active {
   transform: translateY(-5px);
   color: var(--highlight-one);
 }
@@ -234,7 +234,7 @@ input:disabled {
   gap: 3rem;
 }
 
-@media screen and (max-width: 660px) {
+@media screen and (max-width: 675px) {
   .nav {
     padding-top: 1rem;
     margin-inline: 1rem;

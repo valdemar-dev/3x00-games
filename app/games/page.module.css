@@ -1,24 +1,31 @@
 #game_list {
     display: grid;
     grid-auto-rows: 15rem;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
     gap: 1.5rem;
     margin-inline: 2rem;
     opacity: 0%;
     animation: fade_in 0.4s ease-in-out 250ms forwards;
 }
 
-.game {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    background-color: var(--highlight-two);
-    border: 3px solid transparent;
-    border-radius: 15px;
-    transition-duration: 0.2s;
+@media screen and (max-width: 500px) {
+  #game_list {
+    margin-inline: 1rem;
+  }
+}
 
-    opacity: 0%;
-    animation: fade_in 0.4s ease-in-out 250ms forwards;
+.game {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: var(--highlight-two);
+  border: 3px solid transparent;
+  border-radius: 15px;
+  transition-duration: 0.2s;
+
+  opacity: 0%;
+  animation: fade_in 0.4s ease-in-out 250ms forwards;
 }
 
 .game:hover {
@@ -33,7 +40,7 @@
     font-size: 1rem;
 }
 
-.game a {
+.game a#play_button {
     margin-top: auto;
 }
 

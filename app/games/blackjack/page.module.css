@@ -41,6 +41,10 @@
 }
 
 @media screen and (max-width: 500px) {
+  .blackjack_form {
+    padding: 1.3rem;
+  }
+
   .blackjack_form input {
     width: calc(100% - 2rem);
   }
