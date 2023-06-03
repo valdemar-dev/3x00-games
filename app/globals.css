@@ -66,6 +66,12 @@ a:active,.link:active {
   transform: translateY(-5px); 
 }
 
+@media screen and (hover: hover) {
+  a:hover,.link:hover {
+    transform: translateY(-5px); 
+  }
+}
+
 /* HEADINGS */
 h1 {
   font-size: 2.5rem;
@@ -115,14 +121,24 @@ input:disabled {
 }
 
 /* LINK STATUS EFFECTS */
-.link_primary:hover {
+.link_primary:active {
   color: var(--primary);
 }
 
-.link_secondary:hover {
+.link_secondary:active {
   color: var(--primary-darker);
 }
 
+@media screen and (hover: hover) {
+  .link_primary:hover {
+    color: var(--primary);
+  }
+
+  .link_secondary:hover {
+    color: var(--primary-darker);
+  }
+
+}
 /* CUSTOM BUTTONS */
 /* BUTTON TYPES*/
 .button_group {
@@ -179,14 +195,27 @@ input:disabled {
   opacity: 30%;
 }
 
-.button_primary:hover,.button_primary:active {
+.button_primary:active {
   color: var(--primary);
   box-shadow: 0 5px 70px 0px var(--highlight-one);
 }
 
-.button_secondary:hover,.button_primary:active {
+.button_secondary:active {
   transform: translateY(-5px);
   color: var(--highlight-one);
+}
+
+@media screen and (hover: hover) {
+  .button_primary:hover {
+    color: var(--primary);
+    box-shadow: 0 5px 70px 0px var(--highlight-one);
+  }
+
+  .button_secondary:hover
+    {
+    transform: translateY(-5px);
+    color: var(--highlight-one);
+  }
 }
 
 
@@ -234,7 +263,7 @@ input:disabled {
   gap: 3rem;
 }
 
-@media screen and (max-width: 675px) {
+@media screen and (max-width: 750px) {
   .nav {
     padding-top: 1rem;
     margin-inline: 1rem;

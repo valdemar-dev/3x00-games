@@ -25,8 +25,6 @@ export async function GET(req) {
     } 
   }
 
-  console.log(bjGameManager.games);
-
   const gameData = {
     id: game.gameId,
     player: game.player,
