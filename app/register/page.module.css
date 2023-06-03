@@ -14,6 +14,7 @@ div.register {
     background-color: var(--highlight-two);
     border-radius: 15px;
     transition-duration: 0.2s;
+    margin-inline: 1rem;
     border: 3px solid transparent;
 }
 

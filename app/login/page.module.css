@@ -11,6 +11,7 @@ div.login {
     align-items: flex-start;
     padding: 1.7rem;
     gap: 1.7rem;
+    margin-inline: 1rem;
     background-color: var(--highlight-two);
     border-radius: 15px;
     transition-duration: 0.2s;
