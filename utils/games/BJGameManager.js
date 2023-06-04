@@ -136,8 +136,12 @@ class Game {
       }) || null;
     };
 
+    if (this.player.cards.length >= 5) {
+      this.playerWin = true;
+      return updateUserBalance((this.player.bet * 1));
+    }
     // player buest
-    if (this.player.cardTotal > 21) {
+    else if (this.player.cardTotal > 21) {
       return updateUserBalance((this.player.bet * -1));
     } 
     

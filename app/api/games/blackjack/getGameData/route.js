@@ -19,8 +19,10 @@ export async function GET(req) {
   });
 
   if (game.isCurrentTurnPlayer === false) {
+    // delay dealers turn so it doesnt happen instantaneously after drawing, or standing or etc.
+    // also add 1 when the condition passes so that
+    // the client knows to play the sound effect
     if (game.dealerDelayTurnCount < 1) {
-      console.log("NO DEALER DELAY TURN");
       game.dealerDelayTurnCount++;
     } else {
       if (game.dealer.cardTotal < 17) game.dealer.cards.push(game.deck.drawCard());
