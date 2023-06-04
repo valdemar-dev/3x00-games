@@ -158,6 +158,7 @@ export default function BlackjackApp() {
     setLoadingDisplay("block");
 
     await fetch("/api/games/blackjack/stand").then(async (result) => {
+      setAreControlsDisabled(true);
       setLoadingDisplay("none");
 
       if (!result.ok) {
@@ -205,6 +206,7 @@ export default function BlackjackApp() {
             Stand
           </button>
           <button
+            disabled={gameData?.isGameOver}
             className="button button_secondary"
             onClick={() => {leaveGame()}}>
             Quit 
