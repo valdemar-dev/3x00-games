@@ -24,6 +24,7 @@ export async function GET(req) {
     });
   } 
 
+  game.se = "click";
   game.isCurrentTurnPlayer = false;
 
   return new Response("OK.");

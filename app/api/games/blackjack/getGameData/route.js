@@ -19,10 +19,17 @@ export async function GET(req) {
   });
 
   if (game.isCurrentTurnPlayer === false) {
-    if (game.dealer.cardTotal < 17) game.dealer.cards.push(game.deck.drawCard());
-    else if (game.dealer.cardTotal >= 17) {  
-      game.endGame();
-    } 
+    if (game.dealerDelayTurnCount < 1) {
+      console.log("NO DEALER DELAY TURN");
+      game.dealerDelayTurnCount++;
+    } else {
+      if (game.dealer.cardTotal < 17) game.dealer.cards.push(game.deck.drawCard());
+      else if (game.dealer.cardTotal >= 17) {  
+        game.endGame();
+      }
+
+      game.dealerDelayTurnCount++;
+    }
   }
 
   const gameData = {
@@ -33,7 +40,14 @@ export async function GET(req) {
     isCurrentTurnPlayer: game.isCurrentTurnPlayer,
     isGameOver: game.isGameOver,
     playerWin: game.playerWin,
+    se: null,
+    dealerDelayTurnCount: game.dealerDelayTurnCount,
   };
+
+  if (game.se !== null) {
+    gameData.se = game.se;
+    game.se = null;
+  }
 
   return new Response(JSON.stringify({gameData: gameData}));
 }

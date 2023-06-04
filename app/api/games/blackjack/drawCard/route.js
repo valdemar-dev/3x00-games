@@ -28,6 +28,8 @@ export async function GET(req) {
 
   const player = game.player;
 
+  game.se = "cardflip";
+
   player.cards.push(card);
 
   if (player.cardTotal >= 21) {

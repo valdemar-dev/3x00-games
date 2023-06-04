@@ -57,7 +57,8 @@ class Game {
   constructor (playerId, playerUsername, playerBet, creationDate) {
     this.gameId = crypto.randomUUID();
 
-    this.mgCreationDate = creationDate
+    this.mgCreationDate = creationDate;
+    this.dealerDelayTurnCount = 0;
     //create game deck
     this.deck = new GameDeck();
 

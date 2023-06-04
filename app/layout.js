@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
             className="nav_hide">
             <Link href="/games">Games</Link>
             <span className='highlight_tag'>
-              {userWallet || "+$0"}
+              {userWallet?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "+$0"}
             </span>
             <Link href="/store">Store</Link>
           </div>

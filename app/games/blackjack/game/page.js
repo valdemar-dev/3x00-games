@@ -67,7 +67,7 @@ export default function BlackjackApp() {
       });
 
       return;
-    }, 1200)
+    }, 900)
 
     // clears interval when component unloads
     return () => clearInterval(dataInterval);
@@ -76,8 +76,16 @@ export default function BlackjackApp() {
   useEffect(() => {
     if (!gameData) return;
     
+    if(gameData?.se !== null) {
+      if (gameData.se === "cardflip") {
+        cardFlip();
+      } else if (gameData.se === "click") {
+        click();
+      }
+    }
+
     // plays sound that indicates that the dealer is drawing a card
-    if (gameData?.isCurrentTurnPlayer === false && gameData?.isGameOver === false) {
+    if (gameData?.isCurrentTurnPlayer === false && gameData?.isGameOver === false && gameData?.dealerDelayTurnCount > 1) {
       cardFlip();
     }
 
@@ -137,28 +145,24 @@ export default function BlackjackApp() {
   const drawCard = async () => {
     setLoadingDisplay("block");
 
-    await fetch("/api/games/blackjack/drawCard").then((result) => {
+    await fetch("/api/games/blackjack/drawCard").then(async (result) => {
       setLoadingDisplay("none");
 
       if (!result.ok) {  
         return showInfoBox("You can't do that right now!");
       }
-
-      return cardFlip();
     });
   };
 
   const stand = async () => {
     setLoadingDisplay("block");
 
-    await fetch("/api/games/blackjack/stand").then((result) => {
+    await fetch("/api/games/blackjack/stand").then(async (result) => {
       setLoadingDisplay("none");
 
       if (!result.ok) {
         return showInfoBox("You can't do that right now!")
       }
-
-      return click();
     });
   };
 
