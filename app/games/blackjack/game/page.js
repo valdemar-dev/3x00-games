@@ -206,7 +206,7 @@ export default function BlackjackApp() {
             Stand
           </button>
           <button
-            disabled={gameData?.isGameOver}
+            disabled={!gameData?.isGameOver}
             className="button button_secondary"
             onClick={() => {leaveGame()}}>
             Quit 
