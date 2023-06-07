@@ -33,7 +33,7 @@ export async function GET(req) {
   player.cards.push(card);
 
   if (player.cardTotal >= 21) {
-    game.isCurrentTurnPlayer = false;
+    game.isGameOver = true;
 
     if (player.cardTotal > 21) {
       player.gameStatus = "Bust 🚫";

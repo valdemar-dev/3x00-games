@@ -33,7 +33,7 @@ export default function Coinflip(props) {
 
     // Confirm bet size.
     if (!bet || bet < 1) {
-      showInfoBox("You must provide a bet greater than $1.");
+      showInfoBox("You must provide a bet greater than $0.");
       setAreControlsDisabled(false);
       return;
     } else if (bet > 15000) {
@@ -60,8 +60,11 @@ export default function Coinflip(props) {
     const result = await fetch("/api/games/coinflip/", options);
 
     if (!result.ok) {
-      showInfoBox("Uh oh! We've encountered an error.\nTry refreshing the page. If the issue persists, try again later.", 7);
+      showInfoBox(await result.text());
+      setAreControlsDisabled(false);
+      return setLoadingDisplay("none");
     }
+
     const resultJSON = await result.json();
 
     setLoadingDisplay("none");
@@ -73,6 +76,10 @@ export default function Coinflip(props) {
     } else {
       resultRef.current.style.animation = `${styles.coinflip_tails} 5s ease-out forwards`;
     }
+
+    setTimeout(() => {
+      showInfoBox(resultJSON.win  ? "You win!" : "You lose!");
+    }, 5000)
 
     setTimeout(() => {
       resultRef.current.style.animation = `${styles.coinflip_idle} 2s ease-in-out forwards infinite`;

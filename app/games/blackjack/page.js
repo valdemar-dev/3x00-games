@@ -65,7 +65,7 @@ export default function Blackjack() {
         </div>
 
         <div id={styles.form_inputs}>
-          <input name="bet" type="number" max={20000} required placeholder="Bet"/>
+          <input name="bet" type="number" min={0} max={20000} required placeholder="Bet"/>
 
           <button
             className="button button_primary"

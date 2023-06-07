@@ -26,10 +26,34 @@ export async function POST(req) {
   // default to 0 incase users want to have a casual game
   const bet = parseInt(reqJSON.bet) || 0;
 
-  if (bet > 20000 || isNaN(bet)) {
-    return new Response("Incorrect betting information!", {
+  const userWallet = await prisma.userWallet.findFirst({
+    where: {
+      userId: userId,
+    },
+  }) || null;
+
+  if (!userWallet) {
+    return new Response("You don't have a wallet?", {
+      status: 403,
+    }) 
+  }
+
+  if (bet > 15000) {
+    return new Response("Your bet is too large!", {
+      status: 403,
+    })
+  }
+
+  if (bet < 0) {
+    return new Response("Your bet is too small!", {
       status: 400,
-    });
+    })
+  }
+
+  if (bet > userWallet.balance) {
+    return new Response("You don't have that much money!", {
+      status: 400,
+    })
   }
 
   bjGameManager.createGame(userId, username, bet);

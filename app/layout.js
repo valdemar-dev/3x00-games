@@ -7,16 +7,22 @@ import { useEffect, useRef, useState } from 'react';
 export default function RootLayout({ children }) {
   const [ userWallet, setUserWallet ] = useState(null);
 
-  useEffect(() => {
-    fetch("/api/user/getWallet").then(async (result) => {
-      if(!result.ok) return;
+  const getData = async () => {
+    await fetch("/api/user/getWallet").then(async (result) => {
+      if (!result.ok) return;
 
       const wallet = await result.json();
-      
+
       setUserWallet(wallet.balance > 0 ? `+$${wallet.balance}` : `${wallet.balance}`);
-  
-      return;
-    });
+    })
+  };
+
+  useEffect(() => {
+    getData();
+
+    setInterval(() => {
+      getData();
+    }, 10000)
   }, []);
 
   return (

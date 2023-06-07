@@ -21,9 +21,27 @@ export async function POST(req) {
     return new Response({ status: 401, })
   };
 
-  if (bet > 15000 || bet > await prisma.userWallet.findFirst({where: {userId: userId}}).balance) {
+  const userWallet = await prisma.userWallet.findFirst({
+    where: {
+      userId: userId,
+    },
+  }) || null;
+
+  if (!userWallet) {
+    return new Response("You don't have a wallet?", {
+      status: 403,
+    }) 
+  }
+
+  if (bet > 15000) {
     return new Response("Your bet is too large!", {
       status: 403,
+    })
+  }
+
+  if (bet > userWallet.balance) {
+    return new Response("You don't have that much money!", {
+      status: 400,
     })
   }
 
@@ -40,11 +58,15 @@ export async function POST(req) {
     });
   };
 
+  let win = false;
+
   if (result === headsOrTails) {
     await updateUserBalance(bet);
+    win = true;
   } else {
     await updateUserBalance((bet * -1))
+    win = false;
   }
   
-  return new Response(JSON.stringify({ result: result }));
+  return new Response(JSON.stringify({ result: result, win: win }));
 }
