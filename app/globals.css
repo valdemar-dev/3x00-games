@@ -286,9 +286,14 @@ input:disabled {
     justify-content: center;
   }
   
+  .nav_hide a:nth-child(1) {
+    order: -1;
+  }
+
   .nav_hide span {
     max-width: 40%;
     text-overflow: ellipsis;
+    order: -1;
   }
 
   .nav_logo {
