@@ -1,6 +1,9 @@
 import hashText from "@/utils/hashText";
 import prisma from "@/utils/prismaClient";
 import crypto from "crypto";
+import items from "@/utils/items";
+import fs from "fs";
+import path from "path";
 
 export async function POST(request) {
 	// convert the request to json for some reason?
@@ -31,8 +34,11 @@ export async function POST(request) {
 		status: 400,
 	});
 
-	// at this point we can assume the user doesn't exist,
-	// therefore we create it and return OK!
+  const JSONitems = fs.readFileSync(path.join(process.cwd(), "utils/items.json"));
+  const items = JSON.parse(JSONitems).items;
+
+  const item = items.find(item => item.id === "red_t_shirt");
+
 	await prisma.user.create({
 		data: {
 			id: crypto.randomUUID(),
@@ -48,8 +54,12 @@ export async function POST(request) {
 					items: {
 						create: [
 							{
-								name: "Red T-shirt",
-								category: "Clothing",
+                itemId: item.id,
+								name: item.name,
+								category: item.category,
+                description: item.description || null,
+                itemCount: 1,
+                value: item.value,
 							},
 						],
 					},

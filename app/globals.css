@@ -8,7 +8,7 @@
 
 :root {
   --primary: #f6f6f6;
-  --primary-darker: #d9d9d9;
+  --primary-darker: #d8d8d8;
   --secondary: #101528;
   --secondary-lighter: #1a213f;
   --highlight-one: #ff533f;
@@ -106,6 +106,22 @@ input:disabled {
   filter:brightness(30%);
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--highlight-two); 
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-darker);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
 
 /* !!!!!!!!!!!!!! */
 /* CUSTOM STYLING */
@@ -182,6 +198,10 @@ input:disabled {
   font-size: 1.15rem;
 
   cursor:pointer;
+}
+
+.button_no_hover {
+  transform: translateY(0px) !important;
 }
 
 /* BUTTON STYLES */
@@ -306,7 +326,6 @@ input:disabled {
 /* !!!!!!!!!!!!!!!!!!!!! */
 /* USEFUL CUSTOM STYLING */
 /* !!!!!!!!!!!!!!!!!!!!! */
-
 
 .unobstructive {
   filter: opacity(30%);

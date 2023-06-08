@@ -33,9 +33,8 @@ model UserInventory {
 
 model Item {
   id  Int  @id  @default(autoincrement())
-  name  String
-  description  String?
-  category  String
+  itemId String @default("null")
+  itemCount Int @default(1) 
   inventory  UserInventory @relation(fields: [inventoryId], references: [id])
   inventoryId Int
 }

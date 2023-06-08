@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "id": "red_t_shirt",
+      "name": "Red T Shirt",
+      "category": "Clothing",
+      "value": 100,
+      "description": "It's smelly, but it's warm."
+    },
+    {
+      "id": "coin_perma_multiply_one",
+      "name": "5% coin multiplier",
+      "category": "Upgrades",
+      "value": 100000000,
+      "description": "Permanently multiplies all future profits by 5%. Eg. $100 > $105.\nRounds to the nearest dollar."
+    }
+  ]
+}
