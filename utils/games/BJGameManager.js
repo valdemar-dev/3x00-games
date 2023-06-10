@@ -127,7 +127,8 @@ class Game {
     const changeUserBalance = async (amount) => {
       if (amount === 0) return;
 
-      return (`${await updateUserBalance(this.player.id, amount, "game", "blackjack")}`);
+      const response = await updateuserBalance(this.player.id, amount, "game", "blackjack");
+      return response;
    };
 
     if (this.player.cards.length >= 5) {
@@ -143,7 +144,7 @@ class Game {
     else if (this.player.cardTotal === 21) {
       if (this.dealer.cardTotal === 21)  {
         this.playerWin = true;
-        return;
+        return changeUserBalance(this.player.bet);;
       } else {
         this.playerWin = true;
         return changeUserBalance(this.player.bet);
@@ -157,12 +158,12 @@ class Game {
         return changeUserBalance(this.player.bet);
       } 
 
-      if (this.dealer.cardTotal >= this.player.cardTotal) {
+      else if (this.dealer.cardTotal >= this.player.cardTotal) {
         return changeUserBalance((this.player.bet * -1));
       } else {
         this.playerWin = true;
         return changeUserBalance(this.player.bet);
-      }
+      }    
     }
   }
 }
