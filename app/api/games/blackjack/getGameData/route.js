@@ -19,10 +19,14 @@ export async function GET(req) {
   });
 
   let amountWon = 0;
+  if (game.playerBust === true) {
+    amountWon = await game.endGame();
+  } 
+
   if (game.isCurrentTurnPlayer === false) {
     // delay dealers turn so it doesnt happen instantaneously after drawing, or standing or etc.
     // also add 1 when the condition passes so that
-    // the client knows to play the sound effect
+    // the client knows to play the sound effects
     if (game.dealerDelayTurnCount < 1) {
       game.dealerDelayTurnCount++;
     } else {
@@ -55,7 +59,7 @@ export async function GET(req) {
 
   //hacky workaround to tell the user how much money they won
   if (game.isGameOver === true) {
-    gameData.amountWon = amountWon;
+    gameData.amountWon = Math.round(amountWon);
   }
 
   return new Response(JSON.stringify({gameData: gameData}));

@@ -103,7 +103,7 @@ export default function BlackjackApp() {
 
         setIsGESoundPlayed(true);
 
-        showInfoBox(`You lose! -$${gameData?.amountWon}`, 30);
+        showInfoBox(`You lose! -$${gameData?.amountWon * -1}`, 30);
       };
 
       setAreControlsDisabled(true);

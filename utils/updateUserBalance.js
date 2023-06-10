@@ -59,7 +59,7 @@ export default async function updateUserBalance(userId, amount, incomeCategory, 
 
     data: {
       balance: {
-        increment: adjustedAmount,
+        increment: Math.round(adjustedAmount),
       },
     },
   })

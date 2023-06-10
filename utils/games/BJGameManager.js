@@ -66,6 +66,7 @@ class Game {
     this.isGameOver = false;
     this.playerWin = false;
 
+    this.playerBust = false;
     this.isCurrentTurnPlayer = true;
 
     this.player = {

@@ -33,13 +33,13 @@ export async function GET(req) {
   player.cards.push(card);
 
   if (player.cardTotal >= 21) {
-    game.isCurrentTurnPlayer = false;
-
     if (player.cardTotal > 21) {
-      game.isGameOver = true;
+      game.isCurrentTurnPlayer = false;
+      game.playerBust = true;
       player.gameStatus = "Bust 🚫";
     } else {
       player.gameStatus = "Blackjack!";
+      game.isCurrentTurnPlayer = false;
     }
   }
 
