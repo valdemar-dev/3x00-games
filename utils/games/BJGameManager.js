@@ -127,7 +127,7 @@ class Game {
     const changeUserBalance = async (amount) => {
       if (amount === 0) return;
 
-      const response = await updateuserBalance(this.player.id, amount, "game", "blackjack");
+      const response = await updateUserBalance(this.player.id, amount, "game", "blackjack");
       return response;
    };
 
