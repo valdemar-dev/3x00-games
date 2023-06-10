@@ -17,10 +17,14 @@ export default function Coinflip(props) {
   const showInfoBox = (text, duration) => {
     infoRef.current.innerHTML = text;
     infoRef.current.style.animation = "info_slide_in 0.5s ease-out forwards";
-
-    setTimeout(() => {
-      infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
-    }, ((duration * 1000) || 4000));
+    
+    try {
+      setTimeout(() => {
+        infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
+      }, ((duration * 1000) || 4000));
+    } catch {
+      return;
+    }
   };
 
   const coinFlip = async (event) => {

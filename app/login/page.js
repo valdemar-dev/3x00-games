@@ -18,9 +18,13 @@ export default function Login() {
     infoRef.current.innerHTML = text;
     infoRef.current.style.animation = "info_slide_in 0.5s ease-out forwards";
 
-    setInfoBoxTimeout(setTimeout(() => {
-      infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
-    }, ((duration * 1000) || 4000)));
+    try {
+      setInfoBoxTimeout(setTimeout(() => {
+        infoRef.current.style.animation = "info_slide_out 0.5s ease-in forwards";
+      }, ((duration * 1000) || 4000)));
+    } catch {
+      return;
+    }
   };
 
   const handleLogin = async (event) => {

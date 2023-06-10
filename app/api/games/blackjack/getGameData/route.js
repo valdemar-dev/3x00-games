@@ -18,6 +18,7 @@ export async function GET(req) {
     status: 400,
   });
 
+  let amountWon = 0;
   if (game.isCurrentTurnPlayer === false) {
     // delay dealers turn so it doesnt happen instantaneously after drawing, or standing or etc.
     // also add 1 when the condition passes so that
@@ -27,7 +28,7 @@ export async function GET(req) {
     } else {
       if (game.dealer.cardTotal < 17) game.dealer.cards.push(game.deck.drawCard());
       else if (game.dealer.cardTotal >= 17) {  
-        game.endGame();
+        amountWon = await game.endGame();
       }
 
       game.dealerDelayTurnCount++;
@@ -43,12 +44,18 @@ export async function GET(req) {
     isGameOver: game.isGameOver,
     playerWin: game.playerWin,
     se: null,
+    amountWon: 0,
     dealerDelayTurnCount: game.dealerDelayTurnCount,
   };
 
   if (game.se !== null) {
     gameData.se = game.se;
     game.se = null;
+  }
+
+  //hacky workaround to tell the user how much money they won
+  if (game.isGameOver === true) {
+    gameData.amountWon = amountWon;
   }
 
   return new Response(JSON.stringify({gameData: gameData}));

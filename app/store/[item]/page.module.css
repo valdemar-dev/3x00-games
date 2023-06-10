@@ -1,0 +1,59 @@
+#item {
+  display: flex;
+  justify-content: center;
+}
+
+#item_inner {
+  background-color: var(--highlight-two);
+  padding: 1rem;
+  min-width: 300px;
+  max-width: 600px;
+  border-radius: 15px; 
+  margin-inline: 1rem;
+}
+
+#item_header h3 {
+  overflow: clip;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#item_inner form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+#item_inner form button {
+  width: 5rem;
+}
+
+#item_inner form input {
+  padding-block: 0.7rem;
+  padding-inline: 1rem;
+  border-radius: 7px;
+  border: 3px solid transparent;
+  font-size: 1.15rem;
+  font-family: var(--regular-font);
+  transition-duration: 0.2s;
+  background-color: var(--secondary-lighter);
+  color: var(--primary);
+  border-radius: 7px;
+  caret-color: var(--primary);
+}
+
+#item_price {
+  margin-top: 8px;
+}
+
+#item_inner form input:focus {
+  outline: none;
+  border: 3px solid var(--highlight-one);
+}
+
+@media screen and (max-width: 603px) {
+  #item_inner form input {
+    width: calc(100% - 2rem);
+  }
+}
+

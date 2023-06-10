@@ -55,11 +55,7 @@ export async function POST(request) {
 						create: [
 							{
                 itemId: item.id,
-								name: item.name,
-								category: item.category,
-                description: item.description || null,
                 itemCount: 1,
-                value: item.value,
 							},
 						],
 					},

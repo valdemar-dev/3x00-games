@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import './globals.css'
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export default function RootLayout({ children }) {
   const [ userWallet, setUserWallet ] = useState(null);
@@ -13,7 +14,12 @@ export default function RootLayout({ children }) {
 
       const wallet = await result.json();
 
-      setUserWallet(wallet.balance > 0 ? `+$${wallet.balance}` : `${wallet.balance}`);
+      const formattedWallet = Intl.NumberFormat('en-US', {
+        notation: "compact",
+        maximumFractionDigits: 1
+      }).format(wallet.balance);
+
+      setUserWallet(`$${formattedWallet}`);
     })
   };
 
@@ -30,16 +36,20 @@ export default function RootLayout({ children }) {
       <body>
         <nav className="nav">
           <div className="nav_logo">
-            <Link className='link_secondary' href="/">3x00-Games</Link>
+            <Link id="nav_logo" className='link_secondary' href="/">3x00</Link>
           </div>
 
           <div 
             className="nav_hide">
             <Link href="/games">Games</Link>
             <Link href="/store">Store</Link>
-            <span className='highlight_tag'>
+            <Link href="/profile" className="highlight_tag">
               {userWallet?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "+$0"}
-            </span>
+              <Image
+                src={"/profile.svg"}
+                height="25"
+                width="25"/>
+            </Link>
           </div>
         </nav>
         {children}

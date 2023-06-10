@@ -1,5 +1,6 @@
 import prisma from "../prismaClient";
 import crypto from "crypto";
+import updateUserBalance from "../updateUserBalance";
 
 class GameDeck {
   constructor() {
@@ -123,26 +124,19 @@ class Game {
 
     this.isGameOver = true;
 
-    const updateUserBalance = async (amount) => {
+    const changeUserBalance = async (amount) => {
       if (amount === 0) return;
 
-      await prisma.userWallet.update({
-        where: {
-          userId: this.player.id,
-        },
-        data: {
-          balance: { increment: amount },
-        },
-      }) || null;
-    };
+      return (`${await updateUserBalance(this.player.id, amount, "game", "blackjack")}`);
+   };
 
     if (this.player.cards.length >= 5) {
       this.playerWin = true;
-      return updateUserBalance((this.player.bet * 1));
+      return changeUserBalance((this.player.bet * 1));
     }
     // player buest
     else if (this.player.cardTotal > 21) {
-      return updateUserBalance((this.player.bet * -1));
+      return changeUserBalance((this.player.bet * -1));
     } 
     
     // player blackjack
@@ -152,7 +146,7 @@ class Game {
         return;
       } else {
         this.playerWin = true;
-        return updateUserBalance(this.player.bet);
+        return changeUserBalance(this.player.bet);
       }
     } 
 
@@ -160,14 +154,14 @@ class Game {
     else {
       if (this.dealer.cardTotal > 21) {
         this.playerWin = true;
-        return updateUserBalance(this.player.bet);
+        return changeUserBalance(this.player.bet);
       } 
 
       if (this.dealer.cardTotal >= this.player.cardTotal) {
-        return updateUserBalance((this.player.bet * -1));
+        return changeUserBalance((this.player.bet * -1));
       } else {
         this.playerWin = true;
-        return updateUserBalance(this.player.bet);
+        return changeUserBalance(this.player.bet);
       }
     }
   }

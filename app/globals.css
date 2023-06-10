@@ -11,6 +11,7 @@
   --primary-darker: #d8d8d8;
   --secondary: #101528;
   --secondary-lighter: #1a213f;
+  --secondary-darker: #12172d;
   --highlight-one: #ff533f;
   --highlight-two: #0a0e19;
   --highlight-three: #629460;
@@ -204,6 +205,10 @@ input:disabled {
   transform: translateY(0px) !important;
 }
 
+.button_active {
+  color: var(--highlight-one) !important;
+}
+
 /* BUTTON STYLES */
 .button_primary {
   background-color: var(--highlight-one);
@@ -211,6 +216,10 @@ input:disabled {
 }
 .button_secondary {
   background-color: var(--highlight-two);
+  color: var(--primary);
+}
+.button_tirtiary {
+  background-color: var(--secondary-lighter);
   color: var(--primary);
 }
 
@@ -229,16 +238,27 @@ input:disabled {
     transform: translateY(-5px);
     color: var(--highlight-one);
   }
+
+  .button_tirtiary:active {
+    transform: translateY(-5px);
+    color: var(--highlight-one);
+  }
 }
 
 
 @media (hover: hover) and (pointer:fine) {
   .button_primary:hover {
     color: var(--primary);
+    transform: translateY(-5px);
     box-shadow: 0 5px 70px 0px var(--highlight-one);
   }
 
   .button_secondary:hover {
+    transform: translateY(-5px);
+    color: var(--highlight-one);
+  }
+
+  .button_tirtiary:hover {
     transform: translateY(-5px);
     color: var(--highlight-one);
   }
@@ -249,6 +269,15 @@ input:disabled {
 /* NON-COMPONENT CUSTOM STYLING */
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 
+
+/* LOADING PAGE */
+.loading_page {
+  height: 100svh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* NAVIGATION */
 .nav {
@@ -261,15 +290,36 @@ input:disabled {
 
   display: flex;
 
-  height: 4rem;
   align-items: center;
+
+  margin-top: 1rem;
+
+  padding-block: 0.6rem;
+  padding-inline: 1.2rem;
+
+  height: min-content;
+  border-radius: 15px;
 
   opacity: 0;
   animation: fadeIn 0.2s ease-in-out 500ms forwards;
+
+  background-color: var(--highlight-two);
 }
 
 .nav_logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   width: 50%;
+}
+
+.nav_logo a {
+  font-weight: 500;
+  font-size: 1.3rem !important;
+}
+
+.nav_logo a:nth-child(2) {
+  order: -1;
 }
 
 .nav_logo a {
@@ -286,14 +336,20 @@ input:disabled {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
 }
 
-@media screen and (max-width: 750px) {
+/* profile button */
+.nav_hide a:nth-child(3) {
+  display: flex;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 620px) {
   .nav {
-    padding-top: 1rem;
-    margin-inline: 1rem;
+    margin: 0px;
     flex-direction: column;
+    border-radius: 0px;
     justify-content: flex-start;
     align-items: center;
     gap: 1rem;
@@ -310,9 +366,7 @@ input:disabled {
     order: -1;
   }
 
-  .nav_hide span {
-    max-width: 40%;
-    text-overflow: ellipsis;
+  .nav_hide a:nth-child(3) {
     order: -1;
   }
 
@@ -323,30 +377,37 @@ input:disabled {
   }
 }
 
+#profile_image {
+  display: flex;
+  align-items: center;
+}
+
 /* !!!!!!!!!!!!!!!!!!!!! */
 /* USEFUL CUSTOM STYLING */
 /* !!!!!!!!!!!!!!!!!!!!! */
+
 
 .unobstructive {
   filter: opacity(30%);
 }
 
 .highlight_tag {
-  background-color: var(--highlight-two);
-  color: var(--highlight-one);
+  background-color: var(--secondary-darker) !important;
+  color: var(--highlight-one) !important;
 
   border-radius: 4px;
 
-  font-size: 1rem;
   padding-block: 0.4rem;
   padding-inline: 0.7rem;
 
   border: none;
 
+  width: fit-content;
+
   transition-duration: 0.2s;
   transition-timing-function: ease;
   transition-property: all;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
 }
 
 .loading_icon {

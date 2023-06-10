@@ -1,3 +1,4 @@
+import updateUserBalance from "@/utils/updateUserBalance";
 import validateSessionData from "@/utils/validateSessionData";
 import fs from "fs";
 import path from "path";
@@ -15,7 +16,6 @@ export async function GET(req) {
 
   const JSONitems = fs.readFileSync(path.join(process.cwd(), "utils/items.json"));
   const items = JSON.parse(JSONitems).items;
-
 
   return new Response(JSON.stringify(items));
 }

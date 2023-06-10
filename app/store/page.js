@@ -6,7 +6,8 @@ import Link from "next/link";
 
 export default function Store() {
   const [items, setItems] = useState([]);
-  const [showCategories, setShowCategories] = useState(true);
+
+  const [itemFilter, setItemFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState(null);
 
   const categoryRef = useRef(null);
@@ -22,23 +23,33 @@ export default function Store() {
   }, []);
 
   const mapItems = () => {
-    if (items.length < 1) return;
+    const newItems = items.filter((item) => {
+      if(!categoryFilter) return true;
 
-    return items.map((item) => {
-      if (categoryFilter !== null && item.category !== categoryFilter) return;
+      return item.category === categoryFilter;
+    });
+
+    if (newItems < 1) return (
+      <div id={styles.no_items}>
+        No items found!
+      </div>
+    );
+
+    return newItems.map((item) => {
+      if (itemFilter.length > 0 && !item.name.toLowerCase().includes(itemFilter.toLowerCase())) return;
 
       return (
         <Link
           href={`/store/${item.id}`}
-          className={`${styles.item} ${item.value > 100000 ? styles.high_value : null}`}
+          className={`${styles.item}`}
           key={item.id}
+          as={Link}
         >
           <h3>{item.name}</h3>
 
-          <p>{item.description}</p>
+          <span className="highlight_tag">${item.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
 
-          <span className="unobstructive">Value: ${item.value}</span>
-          <Link id={styles.view_button} className="link_primary" href={`/store/${item.id}`}>View</Link> 
+          <p>{item.description}</p>
         </Link>
       )
     })
@@ -47,7 +58,7 @@ export default function Store() {
   return ( 
     <div id={styles.store}>
       <div id={styles.search_box}>
-        <input type="number" placeholder="Search"/> 
+        <input onChange={(e) => setItemFilter(e.target.value)} type="text" placeholder="Search"/> 
       </div>
   
       <div
@@ -57,37 +68,37 @@ export default function Store() {
         <div className="button_group">
           <button 
             onClick={() => {setCategoryFilter(null)}}
-            className="button button_secondary button_no_hover">
+            className={`button button_tirtiary button_no_hover ${categoryFilter === null ? "button_active" : ""}`}>
             All
           </button>
 
           <button 
             onClick={() => {setCategoryFilter("Upgrades")}}
-            className="button button_secondary button_no_hover">
+            className={`button button_tirtiary button_no_hover ${categoryFilter === "Upgrades" ? "button_active" : ""}`}>
             Upgrades 
           </button>
 
           <button 
             onClick={() => {setCategoryFilter("Clothing")}}
-            className="button button_secondary button_no_hover">
+            className={`button button_tirtiary button_no_hover ${categoryFilter === "Clothing" ? "button_active" : ""}`}>
             Clothing
           </button>
 
           <button 
             onClick={() => {setCategoryFilter("Blackjack")}}
-            className="button button_secondary button_no_hover">
+            className={`button button_tirtiary button_no_hover ${categoryFilter === "Blackjack" ? "button_active" : ""}`}>
             Blackjack 
           </button>
 
           <button 
             onClick={() => {setCategoryFilter("Coinflip")}}
-            className="button button_secondary button_no_hover">
+            className={`button button_tirtiary button_no_hover ${categoryFilter === "Coinflip" ? "button_active" : ""}`}>
             Coinflip 
           </button>
 
           <button 
             onClick={() => {setCategoryFilter("Food")}}
-            className="button button_secondary button_no_hover">
+            className={`button button_tirtiary button_no_hover ${categoryFilter === "Food" ? "button_active" : ""}`}>
             Food 
           </button>
         </div>
