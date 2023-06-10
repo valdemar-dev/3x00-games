@@ -1,4 +1,5 @@
 import bjGameManager from "@/utils/games/BJGameManager";
+import prisma from "@/utils/prismaClient";
 import validateSessionData from "@/utils/validateSessionData";
 
 export async function POST(req) {
