@@ -125,7 +125,7 @@ class Game {
     this.isGameOver = true;
 
     const changeUserBalance = async (amount) => {
-      if (amount === 0) return;
+      if (amount === 0) return "0";
 
       const response = await updateUserBalance(this.player.id, amount, "game", "blackjack");
       return response;
