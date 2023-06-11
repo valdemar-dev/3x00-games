@@ -44,7 +44,7 @@ export default function Item({ params, searchParams }) {
 
       const item = resultJSON.items.find(item => item.itemId === params.item);
 
-      setInventoryItem(item || null);
+      setInventoryItem(item || { itemCount: 0, });
     })
   }, []);
 

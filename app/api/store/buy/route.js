@@ -121,6 +121,7 @@ export async function POST(req) {
             {
               itemId: item.id,
               itemCount: amount,
+              boughtAt: Date.now().toString(),
             },
           ]
         }
