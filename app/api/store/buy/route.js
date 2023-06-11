@@ -105,6 +105,7 @@ export async function POST(req) {
           itemCount: {
             increment: amount,
           },
+          boughtAt: Date.now().toString(),
         },
       });
     }

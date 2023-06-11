@@ -37,4 +37,5 @@ model Item {
   itemCount Int @default(1) 
   inventory  UserInventory @relation(fields: [inventoryId], references: [id])
   inventoryId Int
+  boughtAt String @default("1") 
 }

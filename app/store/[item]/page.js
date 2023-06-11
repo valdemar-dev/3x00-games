@@ -22,7 +22,7 @@ export default function Item({ params, searchParams }) {
   };
 
   const [item, setItem] = useState([]);
-  const [inventoryItem, setInventoryItem] = useState({});
+  const [inventoryItem, setInventoryItem] = useState({ itemCount: 0, });
   const [buyOrSell, setBuyOrSell] = useState(null);
   
   // fetch relevant data
@@ -113,7 +113,7 @@ export default function Item({ params, searchParams }) {
           <button
             onClick={() => {setBuyOrSell("sell")}}
             type="submit"
-            className="button button_secondary">
+            className="button button_tirtiary">
             Sell
           </button>
 

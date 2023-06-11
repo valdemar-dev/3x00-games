@@ -27,13 +27,35 @@ export default async function updateUserBalance(userId, amount, incomeCategory, 
 
   const userUpgrades = [];
 
-  userInventory.items.forEach((item) => {
+  userInventory.items.forEach(async (item) => {
     const itemInList = itemList.find((listItem) => listItem.id === item.itemId);
 
     if (!itemInList ) return;
 
     if (itemInList.category === "Upgrades") {
-      userUpgrades.push(itemInList );
+      const itemExpiresAt = parseInt(item.boughtAt) + (itemInList.dataModifiers.duration * 1000);
+      
+      // get rid of the item if it is expired
+      // * 1000 to convert to seconds
+      // itemDuration of 0 means that the item is permanent and should not be deleted.
+      if (itemInList.duration < 1) return userUpgrades.push(itemInList);
+
+      if (Date.now() > itemExpiresAt) {
+        await prisma.item.deleteMany({
+          where: {
+            AND: [
+              {
+                inventoryId: userInventory.id,
+              },
+              {
+                itemId: item.itemId,
+              }
+            ]
+          }
+        });
+      } else {
+        userUpgrades.push(itemInList );
+      }
     }
   });
 

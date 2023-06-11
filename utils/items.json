@@ -30,8 +30,33 @@
             null
           ]
         },
-        "multiplier": 1.05
+        "multiplier": 1.05,
+        "duration": 0
       }
-    }
+    },
+    {
+      "id": "bj_coin_temp_multiply_one_week",
+      "name": "10% BJ Weekly bonus",
+      "category": "Upgrades",
+      "value": 100000,
+      "description": "Temporarily increases all profit from blackjack by 10%, for 1 week.",
+      "maxCount": 1,
+      "isSellable": true,
+      "dataModifiers": {
+        "appliesTo": {
+          "game": [
+            "blackjack"
+          ],
+          "bonus": [
+            null
+          ],
+          "store": [
+            null
+          ]
+        },
+        "multiplier": 1.10,
+        "duration": 1 
+      }
+    } 
   ]
 }
