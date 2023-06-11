@@ -1,4 +1,5 @@
 import prisma from "@/utils/prismaClient";
+import updateUserBalance from "@/utils/updateUserBalance";
 import validateSessionData from "@/utils/validateSessionData";
 
 export async function POST(req) {
@@ -47,24 +48,13 @@ export async function POST(req) {
 
   const result = (Math.random() > 0.5 ? "heads" : "tails");
 
-  const updateUserBalance = async (amount) => {
-    await prisma.userWallet.update({
-      where: {
-        userId: userId,
-      },
-      data: {
-        balance: { increment: amount },
-      },
-    });
-  };
-
   let win = false;
 
   if (result === headsOrTails) {
-    await updateUserBalance(bet);
+    await updateUserBalance(userId, bet, "game", "coinflip");
     win = true;
   } else {
-    await updateUserBalance((bet * -1))
+    await updateUserBalance(userId, (bet * -1), "game", "coinflip");
     win = false;
   }
   

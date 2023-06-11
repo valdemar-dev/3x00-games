@@ -82,7 +82,7 @@ export default function Coinflip(props) {
     }
 
     setTimeout(() => {
-      showInfoBox(resultJSON.win  ? "You win!" : "You lose!");
+      showInfoBox(resultJSON.win  ? `You win! +$${bet}` : `You lose! -$${bet}`);
     }, 5000)
 
     setTimeout(() => {
@@ -96,7 +96,7 @@ export default function Coinflip(props) {
       <form id={styles.coinflip_form} onSubmit={(event) => {coinFlip(event)}}>
         <div id={styles.coin_call}>
           <button 
-            className="button button_secondary" 
+            className="button button_tirtiary" 
             disabled={areControlsDisabled} 
             type="submit"
             onClick={() => {setHeadsOrTails("heads")}}
@@ -106,7 +106,7 @@ export default function Coinflip(props) {
 
           <div id={styles.coin} ref={resultRef}></div>    
           <button 
-            className="button button_secondary" 
+            className="button button_tirtiary" 
             disabled={areControlsDisabled} 
             type="submit"
             onClick={() => {setHeadsOrTails("tails")}}
