@@ -61,6 +61,9 @@ export default function Register() {
         <h2>Register</h2>
         <input type="text" placeholder="Enter your username" required/>
         <input type="password" placeholder="Create a strong password" required/>
+        <span>
+          <span className="unobstructive">By registering, you acknowledge that you've read and understood our <br/></span> <Link className="link link_secondary" href="/terms">Terms of Service</Link>
+        </span>
         <div className={styles.button_group}>
           <button className="button button_primary" type="submit">Register</button>
           <Link href="/login" className="unobstructive">Already a member?</Link>

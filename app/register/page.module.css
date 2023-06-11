@@ -10,7 +10,7 @@ div.register {
     flex-direction: column;
     align-items: flex-start;
     padding: 1.7rem;
-    gap: 1.7rem;
+    gap: 1.2rem;
     background-color: var(--highlight-two);
     border-radius: 15px;
     transition-duration: 0.2s;
@@ -51,6 +51,14 @@ div.register {
     width: 100%;
     justify-content: space-between;
     align-items: center;
+}
+
+@media screen and (max-width: 500px) {
+  .register form .button_group {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 }
 
 .register form input:focus {
