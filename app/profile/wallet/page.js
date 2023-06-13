@@ -62,8 +62,12 @@ export default function Wallet() {
           <button className="button button_primary">Send money</button>
         </div>
 
-        <p>Transaction log</p>
-        <span className="unobstructive">Note: only the latest 10 are shown.</span>
+        <p>
+          Transaction log
+          <br/>
+          <span className="unobstructive">Note: only the latest 10 are shown.</span>
+        </p>
+
         <div id={styles.transaction_log}>{mapTransactions()}</div>
       </div>
     </div>

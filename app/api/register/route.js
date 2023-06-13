@@ -37,7 +37,12 @@ export async function POST(request) {
   const JSONitems = fs.readFileSync(path.join(process.cwd(), "utils/items.json"));
   const items = JSON.parse(JSONitems).items;
 
-  const item = items.find(item => item.id === "red_t_shirt");
+  const item = items.find(item => item.id === "red_jumper");
+  if (!item) {
+    return new Response("Contact system administrator. Item not found.", {
+      status: 500,
+    });
+  }
 
 	await prisma.user.create({
 		data: {
