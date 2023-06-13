@@ -1,0 +1,37 @@
+#profile_container {
+  margin-inline: 1rem;
+}
+
+#profile {
+  padding: 1rem;
+  border-radius: 15px;
+  margin-inline: clamp(1rem, 8vw, 10rem);
+  background-color: var(--highlight-two);
+  max-width: 400px;
+  margin-inline: auto;
+}
+
+#account_name {
+  margin-bottom: 1rem;
+}
+
+#profile_menu {
+  display: flex;
+  margin-blocK: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#profile_menu a {
+  width: auto;
+}
+
+#profile_menu button {
+  text-align: start;
+}
+
+@media screen and (max-width: 500px) {
+  #button_group button {
+    width: 100%;
+  }
+}

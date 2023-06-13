@@ -10,16 +10,26 @@ export async function GET(req) {
     return new Response("Invalid session token.", {
       status: 401,
     });
+  } 
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+
+    include: {
+      wallet: true,
+      inventory: {
+        select: {
+          items: true,
+        },
+      },
+    },
+  }) || null;
+
+  if (!user) {
+    return new Response("User not found.", { status: 404 });
   }
 
-  const userWallet = await prisma.userWallet.findUnique({
-    where: {
-      userId: userId,
-    },
-    include: {
-      transactions: true,
-    },
-  });
-
-  return new Response(JSON.stringify(userWallet));
-};
+  return new Response(JSON.stringify({ username: username, id: userId, wallet: user.wallet, inventory: user.inventory }));
+}

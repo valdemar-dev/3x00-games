@@ -46,6 +46,7 @@ export default function RootLayout({ children }) {
             <Link href="/profile" className="highlight_tag">
               {userWallet?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "+$0"}
               <Image
+                alt="profile icon svg"
                 src={"/profile.svg"}
                 height="25"
                 width="25"/>

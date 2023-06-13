@@ -70,7 +70,10 @@ export default async function updateUserBalance(userId, amount, incomeCategory, 
     //
     // REFER TO ITEMS.JSON FOR THE CATEGORIES AND SOURCES
     if (itemAppliesTo[incomeCategory].includes(incomeSource) || itemAppliesTo[incomeCategory].includes("all")) {
-      adjustedAmount *= item.dataModifiers.multiplier;
+      //invert when negative amount
+      if (amount > 0) {
+        adjustedAmount *= item.dataModifiers.multiplier;
+      } 
     }
   });
 
@@ -84,7 +87,26 @@ export default async function updateUserBalance(userId, amount, incomeCategory, 
         increment: Math.round(adjustedAmount),
       },
     },
-  })
+  });
+
+  await prisma.userWallet.update({
+    where: {
+      userId: userId,
+    },
+
+    data: {
+      transactions: {
+        create: [
+          {
+            transactionAmount: Math.round(adjustedAmount),
+            transactionCategory: incomeCategory,
+            transactionSource: incomeSource,
+            occuredAt: Date.now().toString(),
+          },
+        ],
+      },
+    },
+  });
 
   return adjustedAmount;
 }
